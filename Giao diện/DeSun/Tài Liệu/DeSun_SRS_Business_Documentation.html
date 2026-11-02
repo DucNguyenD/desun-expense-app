@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeSun Personal Finance — Tài Liệu SRS, Quy Trình Nghiệp Vụ & ERD Chuẩn OAP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-hover: #f8fafc;
+      --bg-code: #0f172a;
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --primary-border: #bfdbfe;
+      --orange: #ea580c;
+      --orange-soft: #fff7ed;
+      --orange-border: #fed7aa;
+      --emerald: #059669;
+      --emerald-soft: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      --violet: #7c3aed;
+      --violet-soft: #f5f3ff;
+      --violet-border: #ddd6fe;
+      --rose: #e11d48;
+      --rose-soft: #fff1f2;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    body.dark {
+      --bg-page: #0b1120;
+      --bg-card: #111827;
+      --bg-subtle: #1e293b;
+      --bg-hover: #1f2937;
+      --bg-code: #030712;
+      --text-main: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --border-light: #1e293b;
+      --primary-soft: rgba(37, 99, 235, 0.15);
+      --primary-border: rgba(59, 130, 246, 0.3);
+      --orange-soft: rgba(234, 88, 12, 0.15);
+      --orange-border: rgba(249, 115, 22, 0.3);
+      --emerald-soft: rgba(5, 150, 105, 0.15);
+      --emerald-border: rgba(16, 185, 129, 0.3);
+      --violet-soft: rgba(124, 58, 237, 0.15);
+      --violet-border: rgba(139, 92, 246, 0.3);
+      --rose-soft: rgba(225, 29, 72, 0.15);
+      --amber-soft: rgba(217, 119, 6, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 13.5px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Sticky Sleek Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.dark .topbar {
+      background: rgba(17, 24, 39, 0.88);
+    }
+
+    .topbar-inner {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #ea580c, #f97316);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
+    }
+
+    .brand-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: 6px;
+      padding-left: 8px;
+      border-left: 1px solid var(--border);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: var(--bg-subtle);
+      color: var(--primary);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      border-color: #cbd5e1;
+      background: var(--bg-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      color: #fff;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+    }
+
+    /* Compact Hero Header */
+    .hero {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .hero-left h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-left p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      max-width: 920px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Compact Metric Strip */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 1100px) {
+      .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      box-shadow: var(--shadow-xs);
+      border-left: 3px solid var(--primary);
+    }
+
+    .metric-card.m-orange { border-left-color: var(--orange); }
+    .metric-card.m-emerald { border-left-color: var(--emerald); }
+    .metric-card.m-violet { border-left-color: var(--violet); }
+    .metric-card.m-rose { border-left-color: var(--rose); }
+    .metric-card.m-amber { border-left-color: var(--amber); }
+
+    .metric-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .metric-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Section Card */
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow-xs);
+      scroll-margin-top: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .sec-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 14px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .callout {
+      background: var(--bg-subtle);
+      border-left: 3px solid var(--primary);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .callout.c-orange { border-left-color: var(--orange); background: var(--orange-soft); }
+    .callout.c-emerald { border-left-color: var(--emerald); background: var(--emerald-soft); }
+
+    /* Sleek Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .b-blue { background: var(--primary-soft); color: var(--primary); border: 1px solid var(--primary-border); }
+    .b-orange { background: var(--orange-soft); color: var(--orange); border: 1px solid var(--orange-border); }
+    .b-emerald { background: var(--emerald-soft); color: var(--emerald); border: 1px solid var(--emerald-border); }
+    .b-violet { background: var(--violet-soft); color: var(--violet); border: 1px solid var(--violet-border); }
+    .b-rose { background: var(--rose-soft); color: var(--rose); }
+    .b-amber { background: var(--amber-soft); color: var(--amber); }
+    .b-gray { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+    }
+
+    .pk-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--orange-soft);
+      color: var(--orange);
+      border: 1px solid var(--orange-border);
+      white-space: nowrap;
+    }
+
+    .fk-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      white-space: nowrap;
+    }
+
+    .uk-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: var(--violet-soft);
+      color: var(--violet);
+      border: 1px solid var(--violet-border);
+      white-space: nowrap;
+    }
+
+    .type-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--violet);
+      background: var(--violet-soft);
+      padding: 1px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* ======================================================================
+       INTERACTIVE DBDIAGRAM-STYLE FULL ERD CANVAS (ALL TABLES, COLS & LINES)
+       ====================================================================== */
+    .erd-canvas-wrap {
+      position: relative;
+      background: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin-bottom: 14px;
+    }
+
+    body.dark .erd-canvas-wrap {
+      background: radial-gradient(#334155 1px, transparent 1px);
+      background-size: 16px 16px;
+      background-color: #0f172a;
+    }
+
+    .erd-board {
+      position: relative;
+      min-width: 1280px;
+      display: grid;
+      grid-template-columns: 380px 410px 410px;
+      justify-content: space-between;
+      gap: 36px;
+      z-index: 2;
+    }
+
+    #erd-svg-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .erd-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 2;
+    }
+
+    .erd-col-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      align-self: flex-start;
+    }
+
+    .erd-entity {
+      background: var(--bg-card);
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, opacity 0.15s;
+    }
+
+    body.dark .erd-entity {
+      border-color: #334155;
+    }
+
+    .erd-entity:hover,
+    .erd-entity.active-entity {
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+    }
+
+    .erd-entity.dimmed {
+      opacity: 0.38;
+    }
+
+    .erd-entity-header {
+      padding: 7px 11px;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .eh-auth { background: linear-gradient(90deg, #c2410c, #ea580c); }
+    .eh-source { background: linear-gradient(90deg, #0369a1, #0284c7); }
+    .eh-tx { background: linear-gradient(90deg, #1d4ed8, #2563eb); }
+    .eh-plan { background: linear-gradient(90deg, #047857, #059669); }
+
+    .erd-entity-header span.sub-vn {
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .erd-field-list {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.2px;
+    }
+
+    .erd-field-list tr {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .erd-field-list tr:last-child {
+      border-bottom: none;
+    }
+
+    .erd-field-list tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .erd-field-list td {
+      padding: 3.5px 8px;
+      vertical-align: middle;
+    }
+
+    .erd-field-list td.f-key {
+      width: 34px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+    }
+
+    .erd-field-list td.f-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .erd-field-list td.f-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .erd-field-list td.f-ref {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--primary);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .k-pk { color: var(--orange); background: var(--orange-soft); border-radius: 3px; padding: 1px 4px; }
+    .k-fk { color: var(--primary); background: var(--primary-soft); border-radius: 3px; padding: 1px 4px; }
+    .k-uk { color: var(--violet); background: var(--violet-soft); border-radius: 3px; padding: 1px 4px; }
+    .k-audit { color: var(--text-muted); font-style: italic; }
+
+    /* ======================================================================
+       COMPACT STEP-BY-STEP WORKFLOWS
+       ====================================================================== */
+    .workflow-block {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      background: var(--bg-card);
+    }
+
+    .workflow-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .workflow-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .wf-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 1024px) {
+      .wf-steps { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .wf-steps { grid-template-columns: 1fr; }
+    }
+
+    .wf-step {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 11px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .wf-step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .wf-step-num {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .wf-step-actor {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .wf-step h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .wf-step p {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+
+    .wf-sql {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      padding: 3px 6px;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* ======================================================================
+       SLEEK COMPACT TABLES
+       ====================================================================== */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--bg-card);
+      margin-bottom: 12px;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 7px 11px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 6.5px 11px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    table.data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tbody tr:hover {
+      background: var(--bg-hover);
+    }
+
+    /* Dictionary Table Card Grid */
+    .dict-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      font-family: inherit;
+      font-size: 12px;
+      padding: 6px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      width: 300px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      background: var(--bg-card);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 9px;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .db-table-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .db-table-bar {
+      background: var(--bg-subtle);
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .db-table-bar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Mermaid Wrapper */
+    .mermaid-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      padding: 12px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .mermaid-box-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+    }
+
+    .code-pre {
+      background: var(--bg-code);
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      line-height: 1.6;
+      padding: 12px 16px;
+      border-radius: 7px;
+      overflow-x: auto;
+      margin: 8px 0 12px;
+    }
+
+    @media print {
+      .topbar { display: none !important; }
+      .container { max-width: 100%; padding: 0; }
+      .section-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">DS</div>
+        <span class="brand-title">DeSun Personal Finance</span>
+        <span class="brand-sub">SRS • Business Flows • Full OAP ERD v2.5</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#s1" class="nav-link">1. Kiến trúc</a>
+        <a href="#s2" class="nav-link">2. Full ERD & Quan hệ FK</a>
+        <a href="#s3" class="nav-link">3. Quy trình nghiệp vụ</a>
+        <a href="#s4" class="nav-link">4. Đặc tả SRS</a>
+        <a href="#s5" class="nav-link">5. Chi tiết 8 Bảng (68 Cột)</a>
+        <a href="#s6" class="nav-link">6. Triggers & Công thức</a>
+        <a href="#s7" class="nav-link">7. SQL DDL & Comment</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="../Giao%20di%E1%BB%87n/index.html" class="btn btn-primary">🚀 Mở App DeSun</a>
+        <button class="btn" onclick="toggleDark()">🌓 Giao diện</button>
+        <button class="btn" onclick="window.print()">🖨️ In PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-left">
+        <h1>
+          <span>📘 Tài Liệu Đặc Tả Yêu Cầu (SRS), Quy Trình Nghiệp Vụ & Sơ Đồ ERD Đầy Đủ</span>
+          <span class="badge b-orange">Chuẩn OAP</span>
+        </h1>
+        <p>
+          Hệ thống Quản lý Tài chính Cá nhân dành cho <strong>Cá nhân bạn</strong> & <strong>Các cá nhân độc lập</strong> — Thiết kế đồng bộ 100% với giao diện Web/Mobile DeSun và quy chuẩn đặt tên Cơ sở dữ liệu OAP (Tiền tố <code>PFM_</code>, Khóa chính 3 ký tự, Không tiền tố Schema).
+        </p>
+      </div>
+      <div class="hero-meta">
+        <span class="badge b-blue">8 Bảng Chuẩn OAP</span>
+        <span class="badge b-emerald">12 Quan Hệ FK</span>
+        <span class="badge b-violet">4 Triggers Tự Động</span>
+      </div>
+    </div>
+
+    <!-- METRICS STRIP -->
+    <div class="metrics-grid">
+      <div class="metric-card m-orange">
+        <div class="metric-val">8 Bảng PFM_*</div>
+        <div class="metric-lbl">Chuẩn PK 3 ký tự & Audit OAP</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">12 Khóa Ngoại</div>
+        <div class="metric-lbl">Ràng buộc toàn vẹn 1:N chặt chẽ</div>
+      </div>
+      <div class="metric-card m-emerald">
+        <div class="metric-val">68 Trường Cột</div>
+        <div class="metric-lbl">Đầy đủ kiểu dữ liệu & Ràng buộc</div>
+      </div>
+      <div class="metric-card m-violet">
+        <div class="metric-val">4 Quy Trình</div>
+        <div class="metric-lbl">Auth • Thu Chi • Ngân Sách • Mục Tiêu</div>
+      </div>
+      <div class="metric-card m-amber">
+        <div class="metric-val">4 Triggers</div>
+        <div class="metric-lbl">Đồng bộ Số dư Ví & Tiến độ 0ms</div>
+      </div>
+      <div class="metric-card m-rose">
+        <div class="metric-val">100% Cá Nhân</div>
+        <div class="metric-lbl">Độc lập dữ liệu theo PPR_ID</div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         SECTION 1: TỔNG QUAN KIẾN TRÚC 4 PHÂN HỆ
+         ====================================================================== -->
+    <section class="section-card" id="s1">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">1</span>
+          <span>Tổng Quan Kiến Trúc Nghiệp Vụ & Danh Mục 8 Bảng Chuẩn OAP</span>
+        </div>
+        <span class="badge b-blue">System Architecture</span>
+      </div>
+
+      <div class="callout">
+        <strong>Nguyên tắc phân tách dữ liệu cá nhân:</strong> Mỗi cá nhân sử dụng (<span class="pk-pill">PPR_ID</span>) sở hữu độc lập Ví tiền (<span class="pk-pill">PWA_ID</span>), Danh mục thu chi (<span class="pk-pill">PCA_ID</span>), Bảng kê giao dịch (<span class="pk-pill">PTR_ID</span>), Ngân sách tháng (<span class="pk-pill">PBU_ID</span>) và Mục tiêu tiết kiệm (<span class="pk-pill">PSG_ID</span> $\rightarrow$ <span class="pk-pill">PGD_ID</span>).
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên Bảng OAP</th>
+              <th>PK (3 Ký Tự)</th>
+              <th>Sequence</th>
+              <th>Khóa Ngoại (FK)</th>
+              <th>Phân Hệ</th>
+              <th>Mô Tả Vai Trò Nghiệp Vụ & Liên Kết Giao Diện</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td class="mono"><strong>PFM_PROFILES</strong></td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td class="mono">PFM_PROFILES_SEQ</td>
+              <td>—</td>
+              <td><span class="badge b-orange">1. Định Danh</span></td>
+              <td>Lưu hồ sơ cá nhân sử dụng (<em>Nguyễn Thanh Đức, Trần Minh Anh, Lê Hoàng Nam</em>), Email, Mật khẩu, Avatar viết tắt.</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td class="mono"><strong>PFM_USER_DEVICES</strong></td>
+              <td><span class="pk-pill">PUD_ID</span></td>
+              <td class="mono">PFM_USER_DEVICES_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-orange">1. Định Danh</span></td>
+              <td>Ghi nhận tài khoản đã đăng nhập lần đầu trên thiết bị (<code>HAS_LOGGED_IN='Y'</code>) để nạp vào ô <code>&lt;select&gt;</code> chuyển đổi nhanh.</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td class="mono"><strong>PFM_WALLETS</strong></td>
+              <td><span class="pk-pill">PWA_ID</span></td>
+              <td class="mono">PFM_WALLETS_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">2. Nguồn Tiền</span></td>
+              <td>Quản lý các Ví tiền cá nhân (<em>Techcombank Chính, Ví MoMo, Tiền mặt</em>) và số dư thực tế <code>CURRENT_BALANCE</code>.</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td class="mono"><strong>PFM_CATEGORIES</strong></td>
+              <td><span class="pk-pill">PCA_ID</span></td>
+              <td class="mono">PFM_CATEGORIES_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">2. Danh Mục</span></td>
+              <td>Danh mục Khoản chi (<code>EXPENSE</code>) & Khoản thu (<code>INCOME</code>), mã Icon SVG và màu sắc hiển thị trên bảng/biểu đồ.</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td class="mono"><strong>PFM_TRANSACTIONS</strong></td>
+              <td><span class="pk-pill">PTR_ID</span></td>
+              <td class="mono">PFM_TRANSACTIONS_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span> <span class="fk-pill">PWA_ID</span> <span class="fk-pill">PCA_ID</span> <span class="fk-pill">TRANSFER_PWA_ID</span></td>
+              <td><span class="badge b-violet">3. Giao Dịch</span></td>
+              <td>Bảng trung tâm lưu mọi khoản Thu / Chi / Chuyển khoản trên tab <strong>Danh sách thu chi</strong> (1-Line Table) và Dashboard.</td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td class="mono"><strong>PFM_BUDGETS</strong></td>
+              <td><span class="pk-pill">PBU_ID</span></td>
+              <td class="mono">PFM_BUDGETS_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span> <span class="fk-pill">PCA_ID</span></td>
+              <td><span class="badge b-emerald">4. Ngân Sách</span></td>
+              <td>Hạn mức chi tiêu tối đa theo tháng (<code>PERIOD_MONTH</code>) cho từng danh mục chi tiêu và cảnh báo vượt ngưỡng.</td>
+            </tr>
+            <tr>
+              <td>07</td>
+              <td class="mono"><strong>PFM_SAVINGS_GOALS</strong></td>
+              <td><span class="pk-pill">PSG_ID</span></td>
+              <td class="mono">PFM_SAVINGS_GOALS_SEQ</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-emerald">4. Mục Tiêu (Header)</span></td>
+              <td>★ <strong>Header:</strong> Mục tiêu tiết kiệm cá nhân (Số tiền mục tiêu <code>TARGET_AMOUNT</code>, Đã tích lũy <code>CURRENT_AMOUNT</code>, Hạn chót).</td>
+            </tr>
+            <tr>
+              <td>08</td>
+              <td class="mono"><strong>PFM_GOAL_DEPOSITS</strong></td>
+              <td><span class="pk-pill">PGD_ID</span></td>
+              <td class="mono">PFM_GOAL_DEPOSITS_SEQ</td>
+              <td><span class="fk-pill">PSG_ID</span> <span class="fk-pill">PPR_ID</span> <span class="fk-pill">PWA_ID</span></td>
+              <td><span class="badge b-emerald">4. Mục Tiêu (Detail)</span></td>
+              <td>★ <strong>Detail:</strong> Lịch sử chi tiết từng lần bấm nút <code>+ Nạp tiền</code> vào mục tiêu cá nhân và trừ tiền từ Ví trích nạp.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 2: SƠ ĐỒ ERD ĐẦY ĐỦ CÁC BẢNG, CỘT & RELATIONSHIP (INTERACTIVE + MERMAID)
+         ====================================================================== -->
+    <section class="section-card" id="s2">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">2</span>
+          <span>Sơ Đồ ERD Đầy Đủ 8 Bảng, 68 Cột & 12 Mối Quan Hệ Khóa Ngoại (Relationships)</span>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <span class="badge b-orange">PK: Khóa chính</span>
+          <span class="badge b-blue">FK: Khóa ngoại</span>
+          <span class="badge b-violet">UK: Duy nhất</span>
+        </div>
+      </div>
+
+      <div class="callout c-emerald">
+        💡 <strong>Tương tác trực tiếp trên Sơ đồ ERD:</strong> Di chuột (Hover) vào bất kỳ <strong>Bảng</strong> nào bên dưới để làm nổi bật các đường dây quan hệ Khóa ngoại (<code>1 ───&lt; N</code>) nối giữa các cột PK và FK.
+      </div>
+
+      <!-- INTERACTIVE DBDIAGRAM-STYLE ERD CANVAS -->
+      <div class="erd-canvas-wrap" id="erd-canvas">
+        <svg id="erd-svg-lines"></svg>
+
+        <div class="erd-board" id="erd-board">
+          <!-- COLUMN 1: MASTER & AUTH -->
+          <div class="erd-col">
+            <div class="erd-col-label">Phân hệ 1: Định danh & Thiết bị (Master)</div>
+
+            <!-- TABLE 1: PFM_PROFILES -->
+            <div class="erd-entity" id="ent-PFM_PROFILES" data-table="PFM_PROFILES">
+              <div class="erd-entity-header eh-auth">
+                <span>PFM_PROFILES</span>
+                <span class="sub-vn">Hồ sơ Cá nhân (1)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_PROFILES-PPR_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính cá nhân</td></tr>
+                <tr><td class="f-key"><span class="k-uk">UK</span></td><td class="f-name">PROFILE_CODE</td><td class="f-type">VARCHAR2(50)</td><td class="f-ref">-- Mã hồ sơ (USR_DUC)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">FULL_NAME</td><td class="f-type">VARCHAR2(200)</td><td class="f-ref">-- Họ tên cá nhân</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">ROLE_TITLE</td><td class="f-type">VARCHAR2(100)</td><td class="f-ref">-- Vai trò hiển thị</td></tr>
+                <tr><td class="f-key"><span class="k-uk">UK</span></td><td class="f-name">EMAIL</td><td class="f-type">VARCHAR2(150)</td><td class="f-ref">-- Email đăng nhập</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">PASSWORD_HASH</td><td class="f-type">VARCHAR2(255)</td><td class="f-ref">-- Mật khẩu mã hóa</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">AVATAR_TEXT</td><td class="f-type">VARCHAR2(10)</td><td class="f-ref">-- Chữ viết tắt Avatar</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">AVATAR_COLOR</td><td class="f-type">VARCHAR2(100)</td><td class="f-ref">-- Màu nền Avatar</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">CURRENCY_CODE</td><td class="f-type">VARCHAR2(10)</td><td class="f-ref">-- Tiền tệ ('VND')</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">HIDE_BALANCE</td><td class="f-type">CHAR(1)</td><td class="f-ref">-- Ẩn số dư ('Y'/'N')</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">STATUS</td><td class="f-type">VARCHAR2(1)</td><td class="f-ref">-- Trạng thái ('Y'/'N')</td></tr>
+                <tr><td class="f-key"><span class="k-audit">AU</span></td><td class="f-name k-audit">CREATED/MODIFY_*</td><td class="f-type">DATE/VARCHAR2</td><td class="f-ref">-- 4 cột Audit OAP</td></tr>
+              </table>
+            </div>
+
+            <!-- TABLE 2: PFM_USER_DEVICES -->
+            <div class="erd-entity" id="ent-PFM_USER_DEVICES" data-table="PFM_USER_DEVICES">
+              <div class="erd-entity-header eh-auth">
+                <span>PFM_USER_DEVICES</span>
+                <span class="sub-vn">Thiết bị &lt;select&gt; (2)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_USER_DEVICES-PUD_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PUD_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính thiết bị</td></tr>
+                <tr id="row-PFM_USER_DEVICES-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr><td class="f-key"><span class="k-uk">UK</span></td><td class="f-name">DEVICE_TOKEN</td><td class="f-type">VARCHAR2(150)</td><td class="f-ref">-- Mã trình duyệt/máy</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">DEVICE_NAME</td><td class="f-type">VARCHAR2(200)</td><td class="f-ref">-- Tên thiết bị</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">HAS_LOGGED_IN</td><td class="f-type">CHAR(1)</td><td class="f-ref">-- Đã login lần đầu ('Y')</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">FIRST_LOGIN_AT</td><td class="f-type">DATE</td><td class="f-ref">-- Ngày login đầu tiên</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">LAST_LOGIN_AT</td><td class="f-type">DATE</td><td class="f-ref">-- Lần truy cập cuối</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">IS_REMEMBERED</td><td class="f-type">CHAR(1)</td><td class="f-ref">-- Nhớ trên &lt;select&gt;</td></tr>
+                <tr><td class="f-key"><span class="k-audit">AU</span></td><td class="f-name k-audit">CREATED/MODIFY_*</td><td class="f-type">DATE/VARCHAR2</td><td class="f-ref">-- 4 cột Audit OAP</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- COLUMN 2: WALLETS, TRANSACTIONS, CATEGORIES -->
+          <div class="erd-col">
+            <div class="erd-col-label">Phân hệ 2 & 3: Nguồn tiền, Danh mục & Giao dịch</div>
+
+            <!-- TABLE 3: PFM_WALLETS -->
+            <div class="erd-entity" id="ent-PFM_WALLETS" data-table="PFM_WALLETS">
+              <div class="erd-entity-header eh-source">
+                <span>PFM_WALLETS</span>
+                <span class="sub-vn">Ví & Nguồn tiền (3)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_WALLETS-PWA_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PWA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính Ví tiền</td></tr>
+                <tr id="row-PFM_WALLETS-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">WALLET_NAME</td><td class="f-type">VARCHAR2(150)</td><td class="f-ref">-- Tên ví (Techcombank)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">WALLET_TYPE</td><td class="f-type">VARCHAR2(30)</td><td class="f-ref">-- BANK/EWALLET/CASH</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">INITIAL_BALANCE</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Số dư ban đầu</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">CURRENT_BALANCE</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Số dư hiện tại (Auto)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">COLOR_HEX</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- Màu nhận diện ví</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">IS_DEFAULT</td><td class="f-type">CHAR(1)</td><td class="f-ref">-- Ví mặc định ('Y'/'N')</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">SORT_ORDER</td><td class="f-type">NUMBER(5)</td><td class="f-ref">-- Thứ tự hiển thị</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">STATUS</td><td class="f-type">VARCHAR2(1)</td><td class="f-ref">-- Trạng thái ('Y'/'N')</td></tr>
+              </table>
+            </div>
+
+            <!-- TABLE 5: PFM_TRANSACTIONS -->
+            <div class="erd-entity" id="ent-PFM_TRANSACTIONS" data-table="PFM_TRANSACTIONS">
+              <div class="erd-entity-header eh-tx">
+                <span>PFM_TRANSACTIONS</span>
+                <span class="sub-vn">Bảng Kê Thu Chi Trung Tâm (5)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_TRANSACTIONS-PTR_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PTR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính giao dịch</td></tr>
+                <tr id="row-PFM_TRANSACTIONS-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr id="row-PFM_TRANSACTIONS-PWA_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PWA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_WALLETS</td></tr>
+                <tr id="row-PFM_TRANSACTIONS-PCA_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PCA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_CATEGORIES</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">TX_TYPE</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- EXPENSE / INCOME</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Số tiền (&gt;0, dấu .)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">TX_DATE</td><td class="f-type">DATE</td><td class="f-ref">-- Ngày giao dịch</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">NOTE</td><td class="f-type">VARCHAR2(500)</td><td class="f-ref">-- Nội dung thu/chi</td></tr>
+                <tr id="row-PFM_TRANSACTIONS-TRANSFER_PWA_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">TRANSFER_PWA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → Ví nhận chuyển</td></tr>
+                <tr><td class="f-key"><span class="k-audit">AU</span></td><td class="f-name k-audit">CREATED/MODIFY_*</td><td class="f-type">DATE/VARCHAR2</td><td class="f-ref">-- 4 cột Audit OAP</td></tr>
+              </table>
+            </div>
+
+            <!-- TABLE 4: PFM_CATEGORIES -->
+            <div class="erd-entity" id="ent-PFM_CATEGORIES" data-table="PFM_CATEGORIES">
+              <div class="erd-entity-header eh-source">
+                <span>PFM_CATEGORIES</span>
+                <span class="sub-vn">Danh mục Thu Chi (4)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_CATEGORIES-PCA_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PCA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính danh mục</td></tr>
+                <tr id="row-PFM_CATEGORIES-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → Cá nhân/Chung</td></tr>
+                <tr><td class="f-key"><span class="k-uk">UK</span></td><td class="f-name">CATEGORY_CODE</td><td class="f-type">VARCHAR2(50)</td><td class="f-ref">-- Mã (CAT_FOOD...)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">CATEGORY_NAME</td><td class="f-type">VARCHAR2(150)</td><td class="f-ref">-- Tên (Ăn uống, Lương)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">CATEGORY_TYPE</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- EXPENSE / INCOME</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">ICON_CODE</td><td class="f-type">VARCHAR2(50)</td><td class="f-ref">-- Mã Icon SVG</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">COLOR_HEX</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- Màu chữ/biểu đồ</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">BG_COLOR_HEX</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- Màu nền Pill Badge</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">STATUS</td><td class="f-type">VARCHAR2(1)</td><td class="f-ref">-- Trạng thái ('Y'/'N')</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- COLUMN 3: BUDGETS & GOALS (HEADER-DETAIL) -->
+          <div class="erd-col">
+            <div class="erd-col-label">Phân hệ 4: Ngân sách & Mục tiêu cá nhân</div>
+
+            <!-- TABLE 6: PFM_BUDGETS -->
+            <div class="erd-entity" id="ent-PFM_BUDGETS" data-table="PFM_BUDGETS">
+              <div class="erd-entity-header eh-plan">
+                <span>PFM_BUDGETS</span>
+                <span class="sub-vn">Ngân sách Tháng (6)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_BUDGETS-PBU_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PBU_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính ngân sách</td></tr>
+                <tr id="row-PFM_BUDGETS-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr id="row-PFM_BUDGETS-PCA_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PCA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_CATEGORIES</td></tr>
+                <tr><td class="f-key"><span class="k-uk">UK</span></td><td class="f-name">PERIOD_MONTH</td><td class="f-type">VARCHAR2(7)</td><td class="f-ref">-- Kỳ tháng 'YYYY-MM'</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">LIMIT_AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Hạn mức tối đa</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">SPENT_AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Đã chi (Auto Sync)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">ALERT_THRESHOLD</td><td class="f-type">NUMBER(5,2)</td><td class="f-ref">-- Ngưỡng báo vàng %</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">STATUS</td><td class="f-type">VARCHAR2(1)</td><td class="f-ref">-- Trạng thái ('Y'/'N')</td></tr>
+              </table>
+            </div>
+
+            <!-- TABLE 7: PFM_SAVINGS_GOALS -->
+            <div class="erd-entity" id="ent-PFM_SAVINGS_GOALS" data-table="PFM_SAVINGS_GOALS">
+              <div class="erd-entity-header eh-plan">
+                <span>PFM_SAVINGS_GOALS</span>
+                <span class="sub-vn">★ Header Mục tiêu (7)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_SAVINGS_GOALS-PSG_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PSG_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính mục tiêu</td></tr>
+                <tr id="row-PFM_SAVINGS_GOALS-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">GOAL_NAME</td><td class="f-type">VARCHAR2(200)</td><td class="f-ref">-- Tên mục tiêu cá nhân</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">TARGET_AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Số tiền đích cần đạt</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">CURRENT_AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Đã tích lũy (Auto)</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">DEADLINE_TEXT</td><td class="f-type">VARCHAR2(50)</td><td class="f-ref">-- Hạn chót ('12/2026')</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">ICON_CODE</td><td class="f-type">VARCHAR2(50)</td><td class="f-ref">-- Icon SVG mục tiêu</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">COLOR_HEX</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- Màu thanh tiến trình</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">BG_COLOR_HEX</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- Màu nền khung Icon</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">STATUS</td><td class="f-type">VARCHAR2(20)</td><td class="f-ref">-- ACTIVE / COMPLETED</td></tr>
+              </table>
+            </div>
+
+            <!-- TABLE 8: PFM_GOAL_DEPOSITS -->
+            <div class="erd-entity" id="ent-PFM_GOAL_DEPOSITS" data-table="PFM_GOAL_DEPOSITS">
+              <div class="erd-entity-header eh-plan">
+                <span>PFM_GOAL_DEPOSITS</span>
+                <span class="sub-vn">★ Detail Nạp tiền (8)</span>
+              </div>
+              <table class="erd-field-list">
+                <tr id="row-PFM_GOAL_DEPOSITS-PGD_ID"><td class="f-key"><span class="k-pk">PK</span></td><td class="f-name">PGD_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- Khóa chính lần nạp</td></tr>
+                <tr id="row-PFM_GOAL_DEPOSITS-PSG_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PSG_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → SAVINGS_GOALS</td></tr>
+                <tr id="row-PFM_GOAL_DEPOSITS-PPR_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PPR_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → PFM_PROFILES</td></tr>
+                <tr id="row-PFM_GOAL_DEPOSITS-PWA_ID"><td class="f-key"><span class="k-fk">FK</span></td><td class="f-name">PWA_ID</td><td class="f-type">NUMBER</td><td class="f-ref">-- FK → Ví trích tiền</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">DEPOSIT_AMOUNT</td><td class="f-type">NUMBER(18,2)</td><td class="f-ref">-- Số tiền nạp thêm</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">DEPOSIT_DATE</td><td class="f-type">DATE</td><td class="f-ref">-- Ngày giờ nạp tiền</td></tr>
+                <tr><td class="f-key"></td><td class="f-name">NOTE</td><td class="f-type">VARCHAR2(300)</td><td class="f-ref">-- Ghi chú lần nạp</td></tr>
+                <tr><td class="f-key"><span class="k-audit">AU</span></td><td class="f-name k-audit">CREATED_*</td><td class="f-type">DATE/VARCHAR2</td><td class="f-ref">-- 4 cột Audit OAP</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLETE 12 FOREIGN KEY RELATIONSHIPS TABLE -->
+      <h3>Bảng Đặc Tả Đầy Đủ 12 Mối Quan Hệ Khóa Ngoại (Foreign Key Relationships Matrix)</h3>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên Constraint FK</th>
+              <th>Bảng Con (Child Table)</th>
+              <th>Cột FK</th>
+              <th>Quan Hệ</th>
+              <th>Bảng Cha (Parent Table)</th>
+              <th>Cột PK</th>
+              <th>Cơ Chế ON DELETE</th>
+              <th>Ý Nghĩa Ràng Buộc Nghiệp Vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td class="mono">FK_PUD_PPR</td>
+              <td class="mono">PFM_USER_DEVICES</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>1 cá nhân có thể đăng nhập trên nhiều trình duyệt/thiết bị; lưu trạng thái hiển thị trong <code>&lt;select&gt;</code>.</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td class="mono">FK_PWA_PPR</td>
+              <td class="mono">PFM_WALLETS</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>1 cá nhân sở hữu nhiều Ví nguồn tiền độc lập (Techcombank, Ví MoMo, Tiền mặt).</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td class="mono">FK_PCA_PPR</td>
+              <td class="mono">PFM_CATEGORIES</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>Danh mục riêng của từng cá nhân (hoặc <code>NULL</code> nếu là danh mục chuẩn toàn hệ thống).</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td class="mono">FK_PTR_PPR</td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>Mỗi bút toán giao dịch thu/chi thuộc quyền sở hữu của duy nhất 1 cá nhân.</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td class="mono">FK_PTR_PWA</td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><span class="fk-pill">PWA_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_WALLETS</td>
+              <td><span class="pk-pill">PWA_ID</span></td>
+              <td><span class="badge b-amber">RESTRICT</span></td>
+              <td>Bút toán giao dịch làm tăng/giảm số dư trực tiếp trên Ví nguồn tiền được chọn.</td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td class="mono">FK_PTR_PCA</td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><span class="fk-pill">PCA_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_CATEGORIES</td>
+              <td><span class="pk-pill">PCA_ID</span></td>
+              <td><span class="badge b-amber">RESTRICT</span></td>
+              <td>Phân loại khoản thu/chi để thống kê tỷ trọng Donut Chart và kiểm soát Ngân sách tháng.</td>
+            </tr>
+            <tr>
+              <td>07</td>
+              <td class="mono">FK_PTR_TRANS_PWA</td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><span class="fk-pill">TRANSFER_PWA_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_WALLETS</td>
+              <td><span class="pk-pill">PWA_ID</span></td>
+              <td><span class="badge b-gray">SET NULL</span></td>
+              <td>Ví đích nhận tiền khi cá nhân thực hiện giao dịch Chuyển khoản nội bộ giữa 2 ví (<code>TX_TYPE='TRANSFER'</code>).</td>
+            </tr>
+            <tr>
+              <td>08</td>
+              <td class="mono">FK_PBU_PPR</td>
+              <td class="mono">PFM_BUDGETS</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>Ngân sách chi tiêu tháng được thiết lập riêng theo từng cá nhân.</td>
+            </tr>
+            <tr>
+              <td>09</td>
+              <td class="mono">FK_PBU_PCA</td>
+              <td class="mono">PFM_BUDGETS</td>
+              <td><span class="fk-pill">PCA_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_CATEGORIES</td>
+              <td><span class="pk-pill">PCA_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>Gắn hạn mức chi tiêu tháng với 1 danh mục chi tiêu cụ thể (UK: <code>PPR_ID + PCA_ID + PERIOD_MONTH</code>).</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td class="mono">FK_PSG_PPR</td>
+              <td class="mono">PFM_SAVINGS_GOALS</td>
+              <td><span class="fk-pill">PPR_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_PROFILES</td>
+              <td><span class="pk-pill">PPR_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>1 cá nhân có thể tạo nhiều Mục tiêu tiết kiệm cá nhân (Quỹ khẩn cấp, Mua MacBook, Du lịch...).</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td class="mono">FK_PGD_PSG</td>
+              <td class="mono">PFM_GOAL_DEPOSITS</td>
+              <td><span class="fk-pill">PSG_ID</span></td>
+              <td><span class="badge b-emerald">N : 1 (Header-Detail)</span></td>
+              <td class="mono">PFM_SAVINGS_GOALS</td>
+              <td><span class="pk-pill">PSG_ID</span></td>
+              <td><span class="badge b-rose">CASCADE</span></td>
+              <td>Quan hệ Cha-Con: Lưu nhiều lần bấm <code>+ Nạp tiền</code> tích lũy cho 1 Mục tiêu tiết kiệm.</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td class="mono">FK_PGD_PWA</td>
+              <td class="mono">PFM_GOAL_DEPOSITS</td>
+              <td><span class="fk-pill">PWA_ID</span></td>
+              <td><span class="badge b-blue">N : 1</span></td>
+              <td class="mono">PFM_WALLETS</td>
+              <td><span class="pk-pill">PWA_ID</span></td>
+              <td><span class="badge b-gray">SET NULL</span></td>
+              <td>Xác định nguồn ví bị trích tiền khi cá nhân nạp tiền vào mục tiêu tiết kiệm.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MERMAID FULL ER DIAGRAM (WITH ATTRIBUTES & COMMENTS) -->
+      <div class="mermaid-box">
+        <div class="mermaid-box-head">
+          <span>Sơ Đồ Mermaid ER Diagram Chuẩn Kỹ Thuật (Đầy Đủ Bảng, Cột PK/FK/UK, Kiểu Dữ Liệu &amp; Comment)</span>
+          <span class="badge b-gray">Mermaid erDiagram</span>
+        </div>
+        <div class="mermaid">
+erDiagram
+    PFM_PROFILES ||--o{ PFM_USER_DEVICES : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_WALLETS : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_CATEGORIES : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_TRANSACTIONS : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_BUDGETS : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_SAVINGS_GOALS : "PPR_ID (1:N)"
+    PFM_PROFILES ||--o{ PFM_GOAL_DEPOSITS : "PPR_ID (1:N)"
+    PFM_WALLETS ||--o{ PFM_TRANSACTIONS : "PWA_ID (1:N)"
+    PFM_WALLETS ||--o{ PFM_GOAL_DEPOSITS : "PWA_ID (1:N)"
+    PFM_CATEGORIES ||--o{ PFM_TRANSACTIONS : "PCA_ID (1:N)"
+    PFM_CATEGORIES ||--o{ PFM_BUDGETS : "PCA_ID (1:N)"
+    PFM_SAVINGS_GOALS ||--|{ PFM_GOAL_DEPOSITS : "PSG_ID (Header-Detail)"
+
+    PFM_PROFILES {
+        NUMBER PPR_ID PK "Khoa chinh ho so ca nhan"
+        VARCHAR2 PROFILE_CODE UK "Ma ho so duy nhat (USR_DUC)"
+        VARCHAR2 FULL_NAME "Ho va ten day du"
+        VARCHAR2 EMAIL UK "Email dang nhap"
+        VARCHAR2 PASSWORD_HASH "Mat khau ma hoa"
+        CHAR HIDE_BALANCE "An/Hien so du (Y/N)"
+        VARCHAR2 STATUS "Trang thai OAP (Y/N/D)"
+    }
+    PFM_USER_DEVICES {
+        NUMBER PUD_ID PK "Khoa chinh thiet bi"
+        NUMBER PPR_ID FK "Tham chieu PFM_PROFILES"
+        VARCHAR2 DEVICE_TOKEN UK "Ma trinh duyet/thiet bi"
+        CHAR HAS_LOGGED_IN "Da login lan dau -> Hien select (Y/N)"
+        DATE LAST_LOGIN_AT "Thoi diem truy cap gan nhat"
+    }
+    PFM_WALLETS {
+        NUMBER PWA_ID PK "Khoa chinh vi tien"
+        NUMBER PPR_ID FK "Ca nhan so huu vi"
+        VARCHAR2 WALLET_NAME "Ten vi (Techcombank, MoMo...)"
+        VARCHAR2 WALLET_TYPE "BANK / E_WALLET / CASH"
+        NUMBER INITIAL_BALANCE "So du khoi tao"
+        NUMBER CURRENT_BALANCE "So du thuc te (Auto Sync)"
+        CHAR IS_DEFAULT "Vi mac dinh (Y/N)"
+    }
+    PFM_CATEGORIES {
+        NUMBER PCA_ID PK "Khoa chinh danh muc"
+        NUMBER PPR_ID FK "Ca nhan tao rieng hoac NULL"
+        VARCHAR2 CATEGORY_CODE UK "Ma danh muc (CAT_FOOD...)"
+        VARCHAR2 CATEGORY_NAME "Ten danh muc (An uong, Luong...)"
+        VARCHAR2 CATEGORY_TYPE "EXPENSE (Chi) / INCOME (Thu)"
+        VARCHAR2 ICON_CODE "Ma bieu tuong SVG"
+        VARCHAR2 COLOR_HEX "Ma mau HEX hien thi"
+    }
+    PFM_TRANSACTIONS {
+        NUMBER PTR_ID PK "Khoa chinh giao dich"
+        NUMBER PPR_ID FK "Ca nhan thuc hien"
+        NUMBER PWA_ID FK "Vi thanh toan / nhan tien"
+        NUMBER PCA_ID FK "Danh muc thu chi"
+        VARCHAR2 TX_TYPE "EXPENSE / INCOME / TRANSFER"
+        NUMBER AMOUNT "So tien giao dich (> 0)"
+        DATE TX_DATE "Ngay phat sinh giao dich"
+        VARCHAR2 NOTE "Noi dung dien giai 1 dong"
+        NUMBER TRANSFER_PWA_ID FK "Vi nhan chuyen khoan"
+    }
+    PFM_BUDGETS {
+        NUMBER PBU_ID PK "Khoa chinh ngan sach"
+        NUMBER PPR_ID FK "Ca nhan so huu"
+        NUMBER PCA_ID FK "Danh muc chi tieu"
+        VARCHAR2 PERIOD_MONTH UK "Ky ngan sach YYYY-MM"
+        NUMBER LIMIT_AMOUNT "Han muc chi toi da"
+        NUMBER SPENT_AMOUNT "Da chi thuc te (Auto Sync)"
+        NUMBER ALERT_THRESHOLD "Nguong canh bao (%)"
+    }
+    PFM_SAVINGS_GOALS {
+        NUMBER PSG_ID PK "Khoa chinh muc tieu (Header)"
+        NUMBER PPR_ID FK "Ca nhan so huu muc tieu"
+        VARCHAR2 GOAL_NAME "Ten muc tieu tiet kiem"
+        NUMBER TARGET_AMOUNT "So tien muc tieu can dat"
+        NUMBER CURRENT_AMOUNT "Da tich luy hien tai (Auto)"
+        VARCHAR2 DEADLINE_TEXT "Han chot (12/2026)"
+        VARCHAR2 STATUS "ACTIVE / COMPLETED"
+    }
+    PFM_GOAL_DEPOSITS {
+        NUMBER PGD_ID PK "Khoa chinh lan nap (Detail)"
+        NUMBER PSG_ID FK "Tham chieu PFM_SAVINGS_GOALS"
+        NUMBER PPR_ID FK "Ca nhan thuc hien nap"
+        NUMBER PWA_ID FK "Vi trich tien nap"
+        NUMBER DEPOSIT_AMOUNT "So tien nap them (> 0)"
+        DATE DEPOSIT_DATE "Ngay gio bam + Nap tien"
+        VARCHAR2 NOTE "Ghi chu lan nap"
+    }
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3: 4 QUY TRÌNH NGHIỆP VỤ CỐT LÕI (COMPACT & CLEAR)
+         ====================================================================== -->
+    <section class="section-card" id="s3">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">3</span>
+          <span>Chi Tiết 4 Quy Trình Nghiệp Vụ Cốt Lõi (End-to-End Business Workflows)</span>
+        </div>
+        <span class="badge b-emerald">4 Core Flows</span>
+      </div>
+
+      <!-- WORKFLOW 1 -->
+      <div class="workflow-block">
+        <div class="workflow-head">
+          <div class="workflow-title">
+            <span class="badge b-orange">Quy trình 01</span>
+            <span>Đăng Nhập Lần Đầu & Cơ Chế Nạp Tài Khoản Vào Ô Chọn <code>&lt;select&gt;</code></span>
+          </div>
+          <span class="mono" style="color:var(--text-muted)">PFM_PROFILES ➔ PFM_USER_DEVICES</span>
+        </div>
+        <div class="wf-steps">
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 1</span><span class="wf-step-actor">Client UI</span></div>
+              <h4>Kiểm tra Thiết bị</h4>
+              <p>Chỉ hiển thị trong <code>&lt;select&gt;</code> các tài khoản đã có <code>HAS_LOGGED_IN = 'Y'</code> trên thiết bị hiện tại.</p>
+            </div>
+            <div class="wf-sql">WHERE DEVICE_TOKEN = :token AND HAS_LOGGED_IN = 'Y'</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 2</span><span class="wf-step-actor">Cá nhân mới</span></div>
+              <h4>Chọn Đăng nhập Lần đầu</h4>
+              <p>Chọn dòng <code>+ Đăng nhập tài khoản cá nhân khác (Lần đầu)...</code> trong <code>&lt;select&gt;</code>, form xóa trắng ô nhập.</p>
+            </div>
+            <div class="wf-sql">UI State: selectedWsId = 'NEW_ACCOUNT'</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 3</span><span class="wf-step-actor">Auth Service</span></div>
+              <h4>Xác thực Email & Mật khẩu</h4>
+              <p>Đối chiếu <code>EMAIL</code> và <code>PASSWORD_HASH</code> trong bảng hồ sơ <code>PFM_PROFILES</code>.</p>
+            </div>
+            <div class="wf-sql">SELECT PPR_ID FROM PFM_PROFILES WHERE EMAIL = :email</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 4</span><span class="wf-step-actor">Session Sync</span></div>
+              <h4>Ghi nhận vào <code>&lt;select&gt;</code></h4>
+              <p>Cập nhật <code>HAS_LOGGED_IN = 'Y'</code>. Từ lần sau, user xuất hiện sẵn trong <code>&lt;select&gt;</code> để đổi nhanh 1 chạm.</p>
+            </div>
+            <div class="wf-sql">MERGE INTO PFM_USER_DEVICES SET HAS_LOGGED_IN = 'Y'</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKFLOW 2 -->
+      <div class="workflow-block">
+        <div class="workflow-head">
+          <div class="workflow-title">
+            <span class="badge b-blue">Quy trình 02</span>
+            <span>Ghi Nhận Thu Chi (Popup 1-Screen) & Tự Động Đồng Bộ Số Dư Ví / Ngân Sách</span>
+          </div>
+          <span class="mono" style="color:var(--text-muted)">PFM_TRANSACTIONS ➔ PFM_WALLETS + PFM_BUDGETS</span>
+        </div>
+        <div class="wf-steps">
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 1</span><span class="wf-step-actor">Popup UI</span></div>
+              <h4>Mở Popup Thêm Giao Dịch</h4>
+              <p>Popup hiển thị gọn 1 màn hình (không cuộn dọc, bấm <code>ESC</code> để đóng, chống đóng nhầm khi bôi đen chữ).</p>
+            </div>
+            <div class="wf-sql">Default: TX_TYPE = 'EXPENSE', IS_DEFAULT = 'Y'</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 2</span><span class="wf-step-actor">Input Mask</span></div>
+              <h4>Nhập Tiền & Chọn Danh Mục</h4>
+              <p>Gõ số tiền tự động tách dấu chấm hàng nghìn (<code>450.000</code>), chọn Danh mục (<code>PCA_ID</code>) & Ví (<code>PWA_ID</code>).</p>
+            </div>
+            <div class="wf-sql">INSERT INTO PFM_TRANSACTIONS (PTR_ID, AMOUNT...)</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 3</span><span class="wf-step-actor">DB Trigger 1</span></div>
+              <h4>Tự Động Tính Lại Số Dư Ví</h4>
+              <p>Trigger tự động cộng (<code>INCOME</code>) hoặc trừ (<code>EXPENSE</code>) vào cột <code>CURRENT_BALANCE</code> của Ví.</p>
+            </div>
+            <div class="wf-sql">TRG_PTR_SYNC_WALLET_BAL ➔ UPDATE PFM_WALLETS</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 4</span><span class="wf-step-actor">DB Trigger 2</span></div>
+              <h4>Cập Nhật Đã Chi Ngân Sách</h4>
+              <p>Nếu là khoản Chi, Trigger tự động cộng dồn vào <code>SPENT_AMOUNT</code> của tháng tương ứng.</p>
+            </div>
+            <div class="wf-sql">TRG_PTR_SYNC_BUDGET_SPENT ➔ UPDATE PFM_BUDGETS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKFLOW 3 -->
+      <div class="workflow-block">
+        <div class="workflow-head">
+          <div class="workflow-title">
+            <span class="badge b-emerald">Quy trình 03</span>
+            <span>Tạo Mục Tiêu Cá Nhân & Nạp Tiền Tích Lũy (Mô Hình Header - Detail)</span>
+          </div>
+          <span class="mono" style="color:var(--text-muted)">PFM_SAVINGS_GOALS (Header) ➔ PFM_GOAL_DEPOSITS (Detail)</span>
+        </div>
+        <div class="wf-steps">
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 1</span><span class="wf-step-actor">Người dùng</span></div>
+              <h4>Tạo Mục Tiêu Mới (Header)</h4>
+              <p>Tại tab <strong>Ngân sách & Mục tiêu</strong>, bấm <code>+ Thêm mục tiêu</code>, nhập Tên, Số tiền đích, Hạn chót, Màu & Icon.</p>
+            </div>
+            <div class="wf-sql">INSERT INTO PFM_SAVINGS_GOALS (PSG_ID, TARGET...)</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 2</span><span class="wf-step-actor">Người dùng</span></div>
+              <h4>Bấm "+ Nạp tiền" (Detail)</h4>
+              <p>Bấm nút <code>+ Nạp tiền</code> trên thẻ mục tiêu (hoặc bấm chip nhanh <code>+1.000.000</code>, <code>+2.000.000</code>, <code>+5.000.000</code>).</p>
+            </div>
+            <div class="wf-sql">INSERT INTO PFM_GOAL_DEPOSITS (PGD_ID, PSG_ID...)</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 3</span><span class="wf-step-actor">DB Trigger 3</span></div>
+              <h4>Cộng Dồn Tiến Độ Tự Động</h4>
+              <p>Trigger tự động cộng số tiền nạp vào <code>CURRENT_AMOUNT</code> của bảng Header <code>PFM_SAVINGS_GOALS</code>.</p>
+            </div>
+            <div class="wf-sql">SET CURRENT_AMOUNT = CURRENT_AMOUNT + :DEPOSIT</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 4</span><span class="wf-step-actor">Auto Status</span></div>
+              <h4>Kiểm Tra Hoàn Thành 100%</h4>
+              <p>Nếu <code>CURRENT_AMOUNT &gt;= TARGET_AMOUNT</code>, tự động chuyển trạng thái sang <code>COMPLETED</code>.</p>
+            </div>
+            <div class="wf-sql">IF CURRENT &gt;= TARGET THEN STATUS := 'COMPLETED'</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKFLOW 4 -->
+      <div class="workflow-block" style="margin-bottom:0">
+        <div class="workflow-head">
+          <div class="workflow-title">
+            <span class="badge b-violet">Quy trình 04</span>
+            <span>Thiết Lập Hạn Mức Ngân Sách Tháng & Cảnh Báo Vượt Ngưỡng 3 Cấp Độ</span>
+          </div>
+          <span class="mono" style="color:var(--text-muted)">PFM_BUDGETS (LIMIT_AMOUNT vs SPENT_AMOUNT)</span>
+        </div>
+        <div class="wf-steps">
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 1</span><span class="wf-step-actor">Người dùng</span></div>
+              <h4>Đặt Hạn Mức Chi Tiêu</h4>
+              <p>Bấm <code>Sửa hạn mức</code> trên từng danh mục chi tiêu để cập nhật <code>LIMIT_AMOUNT</code> cho tháng <code>YYYY-MM</code>.</p>
+            </div>
+            <div class="wf-sql">UPDATE PFM_BUDGETS SET LIMIT_AMOUNT = :val</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 2</span><span class="wf-step-actor">Engine</span></div>
+              <h4>Tính % Tỷ Lệ Đã Chi</h4>
+              <p>Hệ thống tính <code>USAGE_PCT = ROUND((SPENT_AMOUNT / LIMIT_AMOUNT) * 100)</code> theo thời gian thực.</p>
+            </div>
+            <div class="wf-sql">USAGE_PCT &lt; 85% ➔ Badge Xanh (Trong tầm kiểm soát)</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 3</span><span class="wf-step-actor">Alert Rule</span></div>
+              <h4>Cảnh Báo Sắp Chạm Trần</h4>
+              <p>Khi tỷ lệ chi tiêu nằm trong ngưỡng <code>85% – 100%</code>, thanh tiến trình chuyển sang màu Vàng Cam.</p>
+            </div>
+            <div class="wf-sql">85% &lt;= USAGE_PCT &lt;= 100% ➔ Badge Cam (Sắp chạm trần)</div>
+          </div>
+          <div class="wf-step">
+            <div>
+              <div class="wf-step-top"><span class="wf-step-num">Bước 4</span><span class="wf-step-actor">Over Limit</span></div>
+              <h4>Báo Đỏ Vượt Ngân Sách</h4>
+              <p>Khi <code>USAGE_PCT &gt; 100%</code>, hệ thống đổi sang màu Đỏ và hiển thị số tiền vượt hạn mức.</p>
+            </div>
+            <div class="wf-sql">USAGE_PCT &gt; 100% ➔ Badge Đỏ (Vượt hạn mức!)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 4: ĐẶC TẢ YÊU CẦU PHẦN MỀM (SRS MATRIX)
+         ====================================================================== -->
+    <section class="section-card" id="s4">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">4</span>
+          <span>Bảng Đặc Tả Yêu Cầu Phần Mềm (SRS Functional Requirements)</span>
+        </div>
+        <span class="badge b-violet">SRS v2.5</span>
+      </div>
+
+      <div class="table-wrap" style="margin-bottom:0">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Mã SRS</th>
+              <th>Nhóm Chức Năng</th>
+              <th>Tên Yêu Cầu</th>
+              <th>Quy Tắc Nghiệp Vụ & Hành Vi Giao Diện (Business Rules)</th>
+              <th>Bảng OAP Liên Quan</th>
+              <th>Ưu Tiên</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono"><strong>SRS-AUTH-01</strong></td>
+              <td>Đăng nhập &amp; Hồ sơ</td>
+              <td>Chuyển đổi cá nhân bằng <code>&lt;select&gt;</code> thông minh</td>
+              <td>Thay thế danh sách thẻ cứng bằng ô chọn <code>&lt;select&gt;</code>. Chỉ liệt kê các cá nhân có <code>HAS_LOGGED_IN = 'Y'</code> trên thiết bị đó. Hỗ trợ tùy chọn đăng nhập tài khoản mới lần đầu.</td>
+              <td><span class="pk-pill">PFM_PROFILES</span> <span class="fk-pill">PFM_USER_DEVICES</span></td>
+              <td><span class="badge b-rose">P0 - Critical</span></td>
+            </tr>
+            <tr>
+              <td class="mono"><strong>SRS-DASH-01</strong></td>
+              <td>Tổng quan Dashboard</td>
+              <td>Thẻ KPI Tài sản ròng &amp; 2 Biểu đồ trực quan</td>
+              <td>Hiển thị 4 thẻ KPI (Tài sản ròng, Thu tháng, Chi tháng, Tỷ lệ tiết kiệm %), Biểu đồ cột Dòng tiền 6 tháng và Biểu đồ Donut cơ cấu chi tiêu. Có nút mắt ẩn/hiện số tiền (<code>HIDE_BALANCE</code>).</td>
+              <td><span class="pk-pill">PFM_WALLETS</span> <span class="fk-pill">PFM_TRANSACTIONS</span></td>
+              <td><span class="badge b-rose">P0 - Critical</span></td>
+            </tr>
+            <tr>
+              <td class="mono"><strong>SRS-LIST-01</strong></td>
+              <td>Danh sách thu chi</td>
+              <td>Bảng dữ liệu 1 dòng (Single-Line Table)</td>
+              <td>Tab mang tên <strong>Danh sách thu chi</strong>. Bảng 8 cột (STT, Ngày, Nội dung, Danh mục, Loại, Nguồn tiền, Số tiền, Thao tác) luôn nằm gọn trên 1 dòng (<code>white-space: nowrap</code>) kèm dòng tổng kết chân bảng.</td>
+              <td><span class="pk-pill">PFM_TRANSACTIONS</span> <span class="fk-pill">PFM_CATEGORIES</span></td>
+              <td><span class="badge b-rose">P0 - Critical</span></td>
+            </tr>
+            <tr>
+              <td class="mono"><strong>SRS-MODAL-01</strong></td>
+              <td>Popup Giao dịch</td>
+              <td>Popup 1-Screen, định dạng dấu chấm (.) &amp; Phím ESC</td>
+              <td>Hiển thị trọn vẹn trong 1 khung nhìn không cuộn dọc. Tự động thêm dấu chấm phân cách hàng nghìn (<code>.</code>) khi gõ. Chống đóng nhầm khi bôi đen kéo chuột ra ngoài; bấm phím <code>ESC</code> để thoát nhanh.</td>
+              <td><span class="pk-pill">PFM_TRANSACTIONS</span> <span class="fk-pill">PFM_WALLETS</span></td>
+              <td><span class="badge b-rose">P0 - Critical</span></td>
+            </tr>
+            <tr>
+              <td class="mono"><strong>SRS-GOAL-01</strong></td>
+              <td>Ngân sách &amp; Mục tiêu</td>
+              <td>Popup Thêm / Sửa / Nạp tiền Mục tiêu &amp; Sửa Ngân sách</td>
+              <td>Cho phép tạo mới mục tiêu (chọn 6 màu, 5 icon), sửa mục tiêu, bấm <code>+ Nạp tiền</code> (kèm các nút chọn nhanh +1tr, +2tr, +5tr) và bấm <code>Sửa hạn mức</code> ngân sách tháng trực tiếp trên giao diện.</td>
+              <td><span class="pk-pill">PFM_SAVINGS_GOALS</span> <span class="fk-pill">PFM_GOAL_DEPOSITS</span> <span class="fk-pill">PFM_BUDGETS</span></td>
+              <td><span class="badge b-rose">P0 - Critical</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 5: TỪ ĐIỂN DỮ LIỆU CHI TIẾT 8 BẢNG CHUẨN OAP (68 CỘT)
+         ====================================================================== -->
+    <section class="section-card" id="s5">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">5</span>
+          <span>Từ Điển Dữ Liệu Chi Tiết 8 Bảng Chuẩn OAP (Data Dictionary — 68 Trường Cột)</span>
+        </div>
+        <span class="badge b-orange">No Schema Prefix • 3-Char PK</span>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div class="dict-toolbar">
+        <input type="text" id="dictSearch" class="search-input" placeholder="🔍 Tìm nhanh tên bảng, tên cột (VD: PPR_ID, AMOUNT)..." oninput="filterDictionary()" />
+        <div class="filter-pills">
+          <button class="filter-btn active" onclick="filterByTable('ALL', this)">Tất cả (8)</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_PROFILES', this)">1. PROFILES</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_USER_DEVICES', this)">2. DEVICES</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_WALLETS', this)">3. WALLETS</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_CATEGORIES', this)">4. CATEGORIES</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_TRANSACTIONS', this)">5. TRANSACTIONS</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_BUDGETS', this)">6. BUDGETS</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_SAVINGS_GOALS', this)">7. GOALS</button>
+          <button class="filter-btn" onclick="filterByTable('PFM_GOAL_DEPOSITS', this)">8. DEPOSITS</button>
+        </div>
+      </div>
+
+      <!-- BẢNG 1: PFM_PROFILES -->
+      <div class="db-table-card" data-table-card="PFM_PROFILES">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-orange">Bảng 01</span>
+            <span class="mono">PFM_PROFILES</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Hồ sơ Cá nhân sử dụng</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PPR_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_PROFILES_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh hồ sơ cá nhân.</td></tr>
+              <tr><td>2</td><td class="mono">PROFILE_CODE</td><td><span class="type-pill">VARCHAR2(50)</span></td><td><span class="uk-pill">UK</span> NOT NULL</td><td>—</td><td>Mã định danh người dùng (<code>ws-duc</code>, <code>ws-linh</code>, <code>ws-nam</code>).</td></tr>
+              <tr><td>3</td><td class="mono">FULL_NAME</td><td><span class="type-pill">VARCHAR2(150)</span></td><td>NOT NULL</td><td>—</td><td>Họ và tên đầy đủ của cá nhân (VD: <em>Nguyễn Thanh Đức</em>).</td></tr>
+              <tr><td>4</td><td class="mono">ROLE_TITLE</td><td><span class="type-pill">VARCHAR2(100)</span></td><td>NULL</td><td><code>'Cá nhân'</code></td><td>Vai trò hiển thị (<code>Tài khoản của bạn</code>, <code>Người dùng cá nhân</code>).</td></tr>
+              <tr><td>5</td><td class="mono">EMAIL</td><td><span class="type-pill">VARCHAR2(150)</span></td><td><span class="uk-pill">UK</span> NOT NULL</td><td>—</td><td>Địa chỉ Email đăng nhập duy nhất (<code>ducnt@desun.vn</code>).</td></tr>
+              <tr><td>6</td><td class="mono">PASSWORD_HASH</td><td><span class="type-pill">VARCHAR2(255)</span></td><td>NOT NULL</td><td>—</td><td>Mật khẩu đăng nhập đã mã hóa bảo mật (Bcrypt/SHA-256).</td></tr>
+              <tr><td>7</td><td class="mono">AVATAR_TEXT</td><td><span class="type-pill">VARCHAR2(10)</span></td><td>NULL</td><td>—</td><td>Chữ viết tắt hiển thị trên Avatar tròn (<code>Đ</code>, <code>A</code>, <code>N</code>).</td></tr>
+              <tr><td>8</td><td class="mono">AVATAR_COLOR</td><td><span class="type-pill">VARCHAR2(100)</span></td><td>NULL</td><td>—</td><td>Mã màu/Gradient của Avatar người dùng.</td></tr>
+              <tr><td>9</td><td class="mono">CURRENCY_CODE</td><td><span class="type-pill">VARCHAR2(10)</span></td><td>NOT NULL</td><td><code>'VND'</code></td><td>Đơn vị tiền tệ mặc định của cá nhân (<code>VND</code>).</td></tr>
+              <tr><td>10</td><td class="mono">HIDE_BALANCE</td><td><span class="type-pill">CHAR(1)</span></td><td>CHECK ('Y','N')</td><td><code>'N'</code></td><td>Trạng thái ẩn số dư tài sản (<code>'Y'</code> = <code>•••••••• ₫</code>, <code>'N'</code> = Hiện).</td></tr>
+              <tr><td>11</td><td class="mono">STATUS</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'ACTIVE'</code></td><td>Trạng thái tài khoản (<code>ACTIVE</code>, <code>INACTIVE</code>, <code>LOCKED</code>).</td></tr>
+              <tr><td>12</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP (<code>CREATED_BY</code>, <code>CREATED_DATE</code>, <code>UPDATED_BY</code>, <code>UPDATED_DATE</code>).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 2: PFM_USER_DEVICES -->
+      <div class="db-table-card" data-table-card="PFM_USER_DEVICES">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-orange">Bảng 02</span>
+            <span class="mono">PFM_USER_DEVICES</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Lịch sử Thiết bị đã đăng nhập lần đầu (Điều khiển ô &lt;select&gt;)</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PUD_ID</span>
+            <span class="fk-pill">FK: PPR_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_USER_DEVICES_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PUD_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh phiên thiết bị của người dùng.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Tham chiếu <code>PFM_PROFILES(PPR_ID)</code>.</td></tr>
+              <tr><td>3</td><td class="mono">DEVICE_TOKEN</td><td><span class="type-pill">VARCHAR2(150)</span></td><td><span class="uk-pill">UK</span> NOT NULL</td><td>—</td><td>Mã định danh trình duyệt/thiết bị. Kết hợp với <code>PPR_ID</code> tạo Unique Key.</td></tr>
+              <tr><td>4</td><td class="mono">DEVICE_NAME</td><td><span class="type-pill">VARCHAR2(200)</span></td><td>NULL</td><td>—</td><td>Tên trình duyệt hoặc thiết bị (VD: <em>Chrome Windows, iPhone Safari</em>).</td></tr>
+              <tr><td>5</td><td class="mono">HAS_LOGGED_IN</td><td><span class="type-pill">CHAR(1)</span></td><td>CHECK ('Y','N')</td><td><code>'Y'</code></td><td><code>'Y'</code> = Đã đăng nhập ít nhất 1 lần $\rightarrow$ được phép hiện trong <code>&lt;select&gt;</code>.</td></tr>
+              <tr><td>6</td><td class="mono">FIRST_LOGIN_AT</td><td><span class="type-pill">DATE</span></td><td>NOT NULL</td><td><code>SYSDATE</code></td><td>Thời điểm đăng nhập thành công lần đầu tiên trên thiết bị.</td></tr>
+              <tr><td>7</td><td class="mono">LAST_LOGIN_AT</td><td><span class="type-pill">DATE</span></td><td>NOT NULL</td><td><code>SYSDATE</code></td><td>Thời điểm đăng nhập hoặc chuyển đổi nhanh gần nhất.</td></tr>
+              <tr><td>8</td><td class="mono">IS_REMEMBERED</td><td><span class="type-pill">CHAR(1)</span></td><td>CHECK ('Y','N')</td><td><code>'Y'</code></td><td>Cho phép chuyển đổi nhanh trong <code>&lt;select&gt;</code>.</td></tr>
+              <tr><td>9</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 3: PFM_WALLETS -->
+      <div class="db-table-card" data-table-card="PFM_WALLETS">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-blue">Bảng 03</span>
+            <span class="mono">PFM_WALLETS</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Danh sách Ví &amp; Nguồn tiền cá nhân</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PWA_ID</span>
+            <span class="fk-pill">FK: PPR_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_WALLETS_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PWA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh ví tiền.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Hồ sơ cá nhân sở hữu ví (<code>PFM_PROFILES.PPR_ID</code>).</td></tr>
+              <tr><td>3</td><td class="mono">WALLET_NAME</td><td><span class="type-pill">VARCHAR2(150)</span></td><td>NOT NULL</td><td>—</td><td>Tên hiển thị của ví (<em>Techcombank Chính, Ví MoMo, Tiền mặt cá nhân</em>).</td></tr>
+              <tr><td>4</td><td class="mono">WALLET_TYPE</td><td><span class="type-pill">VARCHAR2(30)</span></td><td>CHECK</td><td><code>'BANK'</code></td><td>Loại nguồn tiền: <code>BANK</code>, <code>EWALLET</code>, <code>CASH</code>, <code>CREDIT</code>, <code>SAVING</code>.</td></tr>
+              <tr><td>5</td><td class="mono">INITIAL_BALANCE</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>NOT NULL</td><td><code>0</code></td><td>Số dư khởi tạo ban đầu khi mở ví.</td></tr>
+              <tr><td>6</td><td class="mono">CURRENT_BALANCE</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>NOT NULL</td><td><code>0</code></td><td>Số dư hiện tại (Trigger tự động cộng/trừ khi phát sinh giao dịch hoặc nạp mục tiêu).</td></tr>
+              <tr><td>7</td><td class="mono">COLOR_HEX</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>NULL</td><td><code>'#0284c7'</code></td><td>Mã màu nhận diện ví trên thẻ và danh sách (<code>#0284c7</code>, <code>#db2777</code>, <code>#10b981</code>).</td></tr>
+              <tr><td>8</td><td class="mono">IS_DEFAULT</td><td><span class="type-pill">CHAR(1)</span></td><td>CHECK ('Y','N')</td><td><code>'N'</code></td><td><code>'Y'</code> = Tự động chọn sẵn khi mở Popup Thêm giao dịch.</td></tr>
+              <tr><td>9</td><td class="mono">SORT_ORDER</td><td><span class="type-pill">NUMBER(5)</span></td><td>NULL</td><td><code>1</code></td><td>Thứ tự ưu tiên hiển thị ví.</td></tr>
+              <tr><td>10</td><td class="mono">STATUS</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'ACTIVE'</code></td><td>Trạng thái hoạt động của ví (<code>ACTIVE</code>, <code>ARCHIVED</code>).</td></tr>
+              <tr><td>11</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 4: PFM_CATEGORIES -->
+      <div class="db-table-card" data-table-card="PFM_CATEGORIES">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-blue">Bảng 04</span>
+            <span class="mono">PFM_CATEGORIES</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Danh mục Khoản Thu (INCOME) &amp; Khoản Chi (EXPENSE)</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PCA_ID</span>
+            <span class="fk-pill">FK: PPR_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_CATEGORIES_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PCA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh danh mục.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NULL</td><td><code>NULL</code></td><td><code>NULL</code> = Danh mục chuẩn hệ thống; Có giá trị = Danh mục riêng của cá nhân.</td></tr>
+              <tr><td>3</td><td class="mono">CATEGORY_CODE</td><td><span class="type-pill">VARCHAR2(50)</span></td><td><span class="uk-pill">UK</span> NOT NULL</td><td>—</td><td>Mã danh mục (<code>FOOD</code>, <code>HOUSING</code>, <code>TRANSPORT</code>, <code>SALARY</code>, <code>INVEST</code>...).</td></tr>
+              <tr><td>4</td><td class="mono">CATEGORY_NAME</td><td><span class="type-pill">VARCHAR2(150)</span></td><td>NOT NULL</td><td>—</td><td>Tên hiển thị (<em>Ăn uống &amp; Cafe, Nhà ở &amp; Điện nước, Lương &amp; Thưởng...</em>).</td></tr>
+              <tr><td>5</td><td class="mono">CATEGORY_TYPE</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'EXPENSE'</code></td><td>Phân nhóm: <code>EXPENSE</code> (Khoản chi) hoặc <code>INCOME</code> (Khoản thu).</td></tr>
+              <tr><td>6</td><td class="mono">ICON_CODE</td><td><span class="type-pill">VARCHAR2(50)</span></td><td>NOT NULL</td><td>—</td><td>Mã vector SVG (<code>utensils</code>, <code>home</code>, <code>car</code>, <code>bag</code>, <code>wallet</code>, <code>chart</code>).</td></tr>
+              <tr><td>7</td><td class="mono">COLOR_HEX</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>NOT NULL</td><td>—</td><td>Mã màu chữ/icon chính (VD: <code>#f97316</code>).</td></tr>
+              <tr><td>8</td><td class="mono">BG_COLOR_HEX</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>NOT NULL</td><td>—</td><td>Mã màu nền nhạt của Pill Badge (VD: <code>#fff7ed</code>).</td></tr>
+              <tr><td>9</td><td class="mono">SORT_ORDER</td><td><span class="type-pill">NUMBER(5)</span></td><td>NULL</td><td><code>1</code></td><td>Thứ tự hiển thị trên lưới chọn nhanh trong Popup Thêm giao dịch.</td></tr>
+              <tr><td>10</td><td class="mono">STATUS</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'ACTIVE'</code></td><td>Trạng thái hoạt động (<code>ACTIVE</code>, <code>INACTIVE</code>).</td></tr>
+              <tr><td>11</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 5: PFM_TRANSACTIONS -->
+      <div class="db-table-card" data-table-card="PFM_TRANSACTIONS">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-violet">Bảng 05</span>
+            <span class="mono">PFM_TRANSACTIONS</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Bảng Kê Giao Dịch Thu Chi Trung Tâm (Tab Danh sách thu chi)</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PTR_ID</span>
+            <span class="fk-pill">FK: PPR_ID, PWA_ID, PCA_ID, TRANSFER_PWA_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_TRANSACTIONS_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PTR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh bút toán giao dịch.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Hồ sơ cá nhân thực hiện giao dịch (<code>PFM_PROFILES.PPR_ID</code>).</td></tr>
+              <tr><td>3</td><td class="mono"><strong>PWA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Ví nguồn tiền thanh toán hoặc nhận tiền (<code>PFM_WALLETS.PWA_ID</code>).</td></tr>
+              <tr><td>4</td><td class="mono"><strong>PCA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Danh mục thu/chi của giao dịch (<code>PFM_CATEGORIES.PCA_ID</code>).</td></tr>
+              <tr><td>5</td><td class="mono">TX_TYPE</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'EXPENSE'</code></td><td>Loại giao dịch: <code>EXPENSE</code> (Chi ra), <code>INCOME</code> (Thu vào), <code>TRANSFER</code> (Chuyển ví).</td></tr>
+              <tr><td>6</td><td class="mono">AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>CHECK (&gt; 0)</td><td>—</td><td>Số tiền giao dịch (luôn dương; UI tự động phân cách dấu chấm <code>.</code>).</td></tr>
+              <tr><td>7</td><td class="mono">TX_DATE</td><td><span class="type-pill">DATE</span></td><td>NOT NULL</td><td><code>TRUNC(SYSDATE)</code></td><td>Ngày phát sinh giao dịch (phục vụ lọc và sắp xếp mới nhất).</td></tr>
+              <tr><td>8</td><td class="mono">NOTE</td><td><span class="type-pill">VARCHAR2(500)</span></td><td>NOT NULL</td><td>—</td><td>Nội dung diễn giải chi tiết hiển thị trên 1 dòng (VD: <em>Lương tháng 10/2026</em>).</td></tr>
+              <tr><td>9</td><td class="mono"><strong>TRANSFER_PWA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NULL</td><td><code>NULL</code></td><td>Ví đích nhận tiền nếu <code>TX_TYPE = 'TRANSFER'</code> (<code>PFM_WALLETS.PWA_ID</code>).</td></tr>
+              <tr><td>10</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 6: PFM_BUDGETS -->
+      <div class="db-table-card" data-table-card="PFM_BUDGETS">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-emerald">Bảng 06</span>
+            <span class="mono">PFM_BUDGETS</span>
+            <span style="font-weight:400; color:var(--text-muted)">— Hạn mức Ngân sách chi tiêu theo Tháng</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PBU_ID</span>
+            <span class="fk-pill">FK: PPR_ID, PCA_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_BUDGETS_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PBU_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh hạn mức ngân sách.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Hồ sơ cá nhân sở hữu ngân sách (<code>PFM_PROFILES.PPR_ID</code>).</td></tr>
+              <tr><td>3</td><td class="mono"><strong>PCA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Danh mục chi tiêu được áp hạn mức (<code>PFM_CATEGORIES.PCA_ID</code>).</td></tr>
+              <tr><td>4</td><td class="mono">PERIOD_MONTH</td><td><span class="type-pill">VARCHAR2(7)</span></td><td><span class="uk-pill">UK</span> NOT NULL</td><td><code>'2026-10'</code></td><td>Kỳ ngân sách định dạng <code>YYYY-MM</code>. Kết hợp <code>(PPR_ID, PCA_ID, PERIOD_MONTH)</code> là duy nhất.</td></tr>
+              <tr><td>5</td><td class="mono">LIMIT_AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>CHECK (&gt; 0)</td><td>—</td><td>Hạn mức chi tiêu tối đa cho phép trong tháng (sửa qua nút <code>Sửa hạn mức</code>).</td></tr>
+              <tr><td>6</td><td class="mono">SPENT_AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>NOT NULL</td><td><code>0</code></td><td>Tổng tiền đã chi thực tế trong tháng của danh mục đó (Trigger tự đồng bộ).</td></tr>
+              <tr><td>7</td><td class="mono">ALERT_THRESHOLD</td><td><span class="type-pill">NUMBER(5,2)</span></td><td>NULL</td><td><code>85</code></td><td>Ngưỡng phần trăm (%) bắt đầu đổi màu cảnh báo vàng (mặc định <code>85%</code>).</td></tr>
+              <tr><td>8</td><td class="mono">STATUS</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'ACTIVE'</code></td><td>Trạng thái ngân sách (<code>ACTIVE</code>, <code>CLOSED</code>).</td></tr>
+              <tr><td>9</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 7: PFM_SAVINGS_GOALS -->
+      <div class="db-table-card" data-table-card="PFM_SAVINGS_GOALS">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-emerald">Bảng 07</span>
+            <span class="mono">PFM_SAVINGS_GOALS</span>
+            <span style="font-weight:400; color:var(--text-muted)">— ★ Header: Mục tiêu Tiết kiệm Cá nhân</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PSG_ID</span>
+            <span class="fk-pill">FK: PPR_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_SAVINGS_GOALS_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PSG_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh mục tiêu tiết kiệm cá nhân.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Hồ sơ cá nhân sở hữu mục tiêu (<code>PFM_PROFILES.PPR_ID</code>).</td></tr>
+              <tr><td>3</td><td class="mono">GOAL_NAME</td><td><span class="type-pill">VARCHAR2(200)</span></td><td>NOT NULL</td><td>—</td><td>Tên mục tiêu tài chính (VD: <em>Quỹ dự phòng khẩn cấp 6 tháng, Mua MacBook Pro M4</em>).</td></tr>
+              <tr><td>4</td><td class="mono">TARGET_AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>CHECK (&gt; 0)</td><td>—</td><td>Số tiền mục tiêu cần đạt được (VD: <code>150.000.000 ₫</code>).</td></tr>
+              <tr><td>5</td><td class="mono">CURRENT_AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>CHECK (&gt;= 0)</td><td><code>0</code></td><td>Tổng số tiền hiện đã tích lũy được (tự động cộng dồn khi bấm <code>+ Nạp tiền</code>).</td></tr>
+              <tr><td>6</td><td class="mono">DEADLINE_TEXT</td><td><span class="type-pill">VARCHAR2(50)</span></td><td>NULL</td><td>—</td><td>Thời hạn hoàn thành hiển thị trên thẻ (VD: <code>12/2026</code>, <code>06/2027</code>).</td></tr>
+              <tr><td>7</td><td class="mono">DEADLINE_DATE</td><td><span class="type-pill">DATE</span></td><td>NULL</td><td>—</td><td>Ngày hoàn thành mục tiêu dự kiến (phục vụ sắp xếp ưu tiên).</td></tr>
+              <tr><td>8</td><td class="mono">ICON_CODE</td><td><span class="type-pill">VARCHAR2(50)</span></td><td>NOT NULL</td><td><code>'shield'</code></td><td>Biểu tượng mục tiêu (<code>shield</code>, <code>laptop</code>, <code>plane</code>, <code>home</code>, <code>gift</code>).</td></tr>
+              <tr><td>9</td><td class="mono">COLOR_HEX</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>NOT NULL</td><td><code>'#10b981'</code></td><td>Mã màu thanh tiến trình và icon chính.</td></tr>
+              <tr><td>10</td><td class="mono">BG_COLOR_HEX</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>NOT NULL</td><td><code>'#ecfdf5'</code></td><td>Mã màu nền khung icon trên thẻ mục tiêu.</td></tr>
+              <tr><td>11</td><td class="mono">STATUS</td><td><span class="type-pill">VARCHAR2(20)</span></td><td>CHECK</td><td><code>'IN_PROGRESS'</code></td><td>Trạng thái: <code>IN_PROGRESS</code>, <code>COMPLETED</code> (đạt 100%), <code>CANCELLED</code>.</td></tr>
+              <tr><td>12</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>4 cột Audit chuẩn OAP.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG 8: PFM_GOAL_DEPOSITS -->
+      <div class="db-table-card" data-table-card="PFM_GOAL_DEPOSITS" style="margin-bottom:0">
+        <div class="db-table-bar">
+          <div class="db-table-bar-title">
+            <span class="badge b-emerald">Bảng 08</span>
+            <span class="mono">PFM_GOAL_DEPOSITS</span>
+            <span style="font-weight:400; color:var(--text-muted)">— ★ Detail: Lịch sử Nạp tiền vào Mục tiêu Cá nhân</span>
+          </div>
+          <div>
+            <span class="pk-pill">PK: PGD_ID</span>
+            <span class="fk-pill">FK: PSG_ID, PPR_ID, PWA_ID</span>
+            <span class="badge b-gray mono">SEQ: PFM_GOAL_DEPOSITS_SEQ</span>
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none; margin:0; border-radius:0;">
+          <table class="data-table">
+            <thead>
+              <tr><th style="width:42px">#</th><th style="width:190px">Tên Cột</th><th style="width:140px">Kiểu Dữ Liệu</th><th style="width:140px">Ràng Buộc</th><th style="width:120px">Mặc Định</th><th>Mô Tả Ý Nghĩa Nghiệp Vụ</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="mono"><strong>PGD_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="pk-pill">PK</span> NOT NULL</td><td>Sequence</td><td>Khóa chính định danh lần nạp tiền tích lũy.</td></tr>
+              <tr><td>2</td><td class="mono"><strong>PSG_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Mục tiêu nhận tiền tích lũy (<code>PFM_SAVINGS_GOALS.PSG_ID</code>).</td></tr>
+              <tr><td>3</td><td class="mono"><strong>PPR_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NOT NULL</td><td>—</td><td>Hồ sơ cá nhân thực hiện nạp tiền (<code>PFM_PROFILES.PPR_ID</code>).</td></tr>
+              <tr><td>4</td><td class="mono"><strong>PWA_ID</strong></td><td><span class="type-pill">NUMBER</span></td><td><span class="fk-pill">FK</span> NULL</td><td><code>NULL</code></td><td>Ví nguồn tiền trích ra để nạp vào mục tiêu (<code>PFM_WALLETS.PWA_ID</code>).</td></tr>
+              <tr><td>5</td><td class="mono">DEPOSIT_AMOUNT</td><td><span class="type-pill">NUMBER(18,2)</span></td><td>CHECK (&gt; 0)</td><td>—</td><td>Số tiền nạp thêm vào mục tiêu trong lần nạp đó.</td></tr>
+              <tr><td>6</td><td class="mono">DEPOSIT_DATE</td><td><span class="type-pill">DATE</span></td><td>NOT NULL</td><td><code>SYSDATE</code></td><td>Ngày giờ thực hiện bấm <code>+ Nạp tiền</code>.</td></tr>
+              <tr><td>7</td><td class="mono">NOTE</td><td><span class="type-pill">VARCHAR2(300)</span></td><td>NULL</td><td>—</td><td>Ghi chú lần nạp (VD: <em>Trích thưởng dự án tháng 10</em>).</td></tr>
+              <tr><td>8</td><td class="mono">CREATED_BY / DATE</td><td><span class="type-pill">VARCHAR2 / DATE</span></td><td>OAP Audit</td><td><code>SYSDATE</code></td><td>2 cột Audit chuẩn OAP (<code>CREATED_BY</code>, <code>CREATED_DATE</code>).</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 6: TRIGGERS ĐỒNG BỘ TỰ ĐỘNG & CÔNG THỨC TÀI CHÍNH
+         ====================================================================== -->
+    <section class="section-card" id="s6" style="margin-bottom:0">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">6</span>
+          <span>Hệ Thống Triggers Tự Động Chuẩn OAP &amp; Công Thức Tính Toán Tài Chính</span>
+        </div>
+        <span class="badge b-amber">PL/SQL Automation</span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên Trigger Chuẩn OAP</th>
+              <th>Bảng Gắn Trigger</th>
+              <th>Sự Kiện Kích Hoạt</th>
+              <th>Bảng Được Đồng Bộ</th>
+              <th>Mô Tả Cơ Chế Đồng Bộ Tự Động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td class="mono"><strong>TRG_PTR_SYNC_WALLET_BAL</strong></td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><code>AFTER INSERT OR UPDATE OR DELETE</code></td>
+              <td class="mono">PFM_WALLETS</td>
+              <td>Tự động cộng (<code>INCOME</code>) hoặc trừ (<code>EXPENSE</code>) vào cột <code>CURRENT_BALANCE</code> của Ví nguồn tiền tương ứng.</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td class="mono"><strong>TRG_PTR_SYNC_BUDGET_SPENT</strong></td>
+              <td class="mono">PFM_TRANSACTIONS</td>
+              <td><code>AFTER INSERT OR UPDATE OR DELETE</code></td>
+              <td class="mono">PFM_BUDGETS</td>
+              <td>Tự động cộng/trừ <code>SPENT_AMOUNT</code> của danh mục <code>PCA_ID</code> trong kỳ tháng <code>TO_CHAR(TX_DATE, 'YYYY-MM')</code>.</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td class="mono"><strong>TRG_PGD_SYNC_GOAL_AMT</strong></td>
+              <td class="mono">PFM_GOAL_DEPOSITS</td>
+              <td><code>AFTER INSERT OR DELETE</code></td>
+              <td class="mono">PFM_SAVINGS_GOALS</td>
+              <td>Tự động cộng dồn <code>DEPOSIT_AMOUNT</code> vào <code>CURRENT_AMOUNT</code> và chuyển <code>STATUS = 'COMPLETED'</code> khi đạt 100%.</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td class="mono"><strong>TRG_PUD_SYNC_LOGIN_TIME</strong></td>
+              <td class="mono">PFM_USER_DEVICES</td>
+              <td><code>BEFORE INSERT OR UPDATE</code></td>
+              <td class="mono">PFM_USER_DEVICES</td>
+              <td>Đặt <code>HAS_LOGGED_IN = 'Y'</code> và cập nhật <code>LAST_LOGIN_AT = SYSDATE</code> để hiển thị trong <code>&lt;select&gt;</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="code-pre">/* 1. Tổng Tài Sản Ròng Cá Nhân (Net Worth) */
+TOTAL_NET_WORTH   = SUM(PFM_WALLETS.CURRENT_BALANCE) WHERE PPR_ID = :p_ppr_id AND STATUS = 'ACTIVE';
+
+/* 2. Dòng Tiền Ròng Trong Tháng (Monthly Net Cashflow) */
+NET_CASHFLOW      = SUM(CASE WHEN TX_TYPE = 'INCOME' THEN AMOUNT ELSE -AMOUNT END)
+                    FROM PFM_TRANSACTIONS WHERE PPR_ID = :p_ppr_id AND TO_CHAR(TX_DATE, 'YYYY-MM') = :p_month;
+
+/* 3. Tỷ Lệ Tiết Kiệm Cá Nhân (Personal Savings Rate %) */
+SAVINGS_RATE_PCT  = ROUND(((MONTHLY_INCOME - MONTHLY_EXPENSE) / NULLIF(MONTHLY_INCOME, 0)) * 100, 1);
+
+/* 4. Tiến Độ Mục Tiêu Tiết Kiệm (Goal Progress & Remaining) */
+GOAL_PROGRESS_PCT = LEAST(100, ROUND((CURRENT_AMOUNT / NULLIF(TARGET_AMOUNT, 0)) * 100));
+GOAL_REMAINING    = GREATEST(0, TARGET_AMOUNT - CURRENT_AMOUNT);</pre>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 7: SCRIPT SQL TẠO BẢNG KÈM COMMENT ĐẦY ĐỦ (CREATE TABLE + COMMENT ON COLUMN)
+         ====================================================================== -->
+    <section class="section-card" id="s7" style="margin-top:18px; margin-bottom:0">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="sec-num">7</span>
+          <span>Script SQL Tạo Bảng Kèm Comment Đầy Đủ Cho Từng Cột (<code>CREATE TABLE</code> + <code>COMMENT ON COLUMN</code>)</span>
+        </div>
+        <button class="btn btn-primary" onclick="copyDdlSql(this)">📋 Sao chép toàn bộ SQL DDL</button>
+      </div>
+
+      <div class="callout c-orange">
+        <strong>Chuẩn tạo bảng OAP:</strong> Mỗi cột trong câu lệnh <code>CREATE TABLE</code> đều có chú thích trực tiếp (<code>-- ...</code>) bên phải và đi kèm đầy đủ lệnh <code>COMMENT ON TABLE</code> / <code>COMMENT ON COLUMN</code> chuẩn Oracle để dễ dàng tra cứu trên DBeaver / SQL Developer / PLSQL Developer.
+      </div>
+
+      <pre class="code-pre" id="ddl-sql-block" style="max-height: 560px; overflow-y: auto; margin-bottom: 0;">-- ============================================================================
+-- 1. SEQUENCES CHUẨN OAP (TỰ TĂNG KHÓA CHÍNH 3 KÝ TỰ)
+-- ============================================================================
+CREATE SEQUENCE PFM_PROFILES_SEQ      START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_USER_DEVICES_SEQ  START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_WALLETS_SEQ       START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_CATEGORIES_SEQ    START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_TRANSACTIONS_SEQ  START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_BUDGETS_SEQ       START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_SAVINGS_GOALS_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE PFM_GOAL_DEPOSITS_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+
+-- ============================================================================
+-- 2.1. BẢNG PFM_PROFILES (Hồ sơ Cá nhân sử dụng)
+-- ============================================================================
+CREATE TABLE PFM_PROFILES (
+  PPR_ID          NUMBER        PRIMARY KEY,                                     -- [PK] Khóa chính tự tăng (PFM_PROFILES_SEQ)
+  PROFILE_CODE    VARCHAR2(50)  NOT NULL,                                        -- [UK] Mã định danh hồ sơ cá nhân (VD: USR_DUC, USR_MINHANH)
+  EMAIL           VARCHAR2(150) NOT NULL,                                        -- [UK] Địa chỉ Email đăng nhập duy nhất
+  PASSWORD_HASH   VARCHAR2(255) NOT NULL,                                        -- Mật khẩu đăng nhập đã mã hóa bảo mật
+  FULL_NAME       VARCHAR2(200) NOT NULL,                                        -- Họ và tên đầy đủ của cá nhân (VD: Nguyễn Thanh Đức)
+  DISPLAY_NAME    VARCHAR2(100) NOT NULL,                                        -- Tên rút gọn hiển thị trên Header/Sidebar (VD: Thanh Đức)
+  AVATAR_INITIALS VARCHAR2(10)  NOT NULL,                                        -- Chữ viết tắt hiển thị trong vòng tròn Avatar (Đ, A, N)
+  AVATAR_COLOR    VARCHAR2(100) DEFAULT '#ea580c',                               -- Mã màu nền Avatar của cá nhân
+  ROLE_TYPE       VARCHAR2(30)  DEFAULT 'INDIVIDUAL',                            -- Phân loại: OWNER (Chủ tài khoản chính), INDIVIDUAL (Cá nhân khác)
+  CURRENCY_CODE   VARCHAR2(10)  DEFAULT 'VND' NOT NULL,                          -- Đơn vị tiền tệ mặc định ('VND')
+  BALANCE_HIDDEN  VARCHAR2(1)   DEFAULT 'N' CHECK (BALANCE_HIDDEN IN ('Y','N')), -- Trạng thái ẩn số dư tài sản ('Y': Ẩn ****, 'N': Hiển thị)
+  LAST_LOGIN_DATE DATE,                                                          -- Thời điểm đăng nhập thành công gần nhất
+  STATUS          VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),   -- Trạng thái bản ghi chuẩn OAP ('Y': Active, 'N': Inactive, 'D': Deleted)
+  CREATED_DATE    DATE          DEFAULT SYSDATE,                                 -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY      VARCHAR2(50),                                                  -- [Audit OAP] Người tạo bản ghi (COALESCE(:p_username, USER))
+  MODIFY_DATE     DATE,                                                          -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY     VARCHAR2(50),                                                  -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_PROFILES_UK_CODE  UNIQUE (PROFILE_CODE),
+  CONSTRAINT PFM_PROFILES_UK_EMAIL UNIQUE (EMAIL)
+);
+
+COMMENT ON TABLE  PFM_PROFILES                 IS 'Bảng lưu hồ sơ định danh các cá nhân sử dụng hệ thống quản lý chi tiêu DeSun';
+COMMENT ON COLUMN PFM_PROFILES.PPR_ID          IS 'Khóa chính định danh hồ sơ cá nhân (Tự tăng qua PFM_PROFILES_SEQ)';
+COMMENT ON COLUMN PFM_PROFILES.PROFILE_CODE    IS 'Mã hồ sơ cá nhân duy nhất (VD: USR_DUC, USR_MINHANH, USR_NAM)';
+COMMENT ON COLUMN PFM_PROFILES.EMAIL           IS 'Địa chỉ Email dùng để đăng nhập hệ thống';
+COMMENT ON COLUMN PFM_PROFILES.PASSWORD_HASH   IS 'Chuỗi mật khẩu đã mã hóa bảo mật';
+COMMENT ON COLUMN PFM_PROFILES.FULL_NAME       IS 'Họ và tên đầy đủ của cá nhân sử dụng';
+COMMENT ON COLUMN PFM_PROFILES.DISPLAY_NAME    IS 'Tên hiển thị ngắn gọn trên thanh điều hướng';
+COMMENT ON COLUMN PFM_PROFILES.AVATAR_INITIALS IS 'Chữ cái viết tắt hiển thị trên Avatar (VD: TĐ, MA, HN)';
+COMMENT ON COLUMN PFM_PROFILES.AVATAR_COLOR    IS 'Mã màu HEX hoặc Gradient của Avatar';
+COMMENT ON COLUMN PFM_PROFILES.ROLE_TYPE       IS 'Vai trò người dùng: OWNER (Cá nhân bạn) hoặc INDIVIDUAL (Cá nhân độc lập khác)';
+COMMENT ON COLUMN PFM_PROFILES.CURRENCY_CODE   IS 'Mã tiền tệ mặc định (Mặc định: VND)';
+COMMENT ON COLUMN PFM_PROFILES.BALANCE_HIDDEN  IS 'Cờ ẩn/hiện số dư trên Dashboard (Y: Ẩn số tiền, N: Hiện số tiền)';
+COMMENT ON COLUMN PFM_PROFILES.LAST_LOGIN_DATE IS 'Thời điểm người dùng đăng nhập lần cuối';
+COMMENT ON COLUMN PFM_PROFILES.STATUS          IS 'Trạng thái chuẩn OAP (Y: Đang hoạt động, N: Ngưng hoạt động, D: Đã xóa)';
+COMMENT ON COLUMN PFM_PROFILES.CREATED_DATE    IS 'Ngày giờ khởi tạo bản ghi';
+COMMENT ON COLUMN PFM_PROFILES.CREATED_BY      IS 'Tài khoản khởi tạo bản ghi';
+COMMENT ON COLUMN PFM_PROFILES.MODIFY_DATE     IS 'Ngày giờ chỉnh sửa bản ghi lần cuối';
+COMMENT ON COLUMN PFM_PROFILES.MODIFIED_BY     IS 'Tài khoản chỉnh sửa bản ghi lần cuối';
+
+-- ============================================================================
+-- 2.2. BẢNG PFM_USER_DEVICES (Lưu tài khoản đã đăng nhập lần đầu trên thiết bị)
+-- ============================================================================
+CREATE TABLE PFM_USER_DEVICES (
+  PUD_ID           NUMBER        PRIMARY KEY,                                    -- [PK] Khóa chính tự tăng (PFM_USER_DEVICES_SEQ)
+  DEVICE_TOKEN     VARCHAR2(150) NOT NULL,                                       -- [UK] Mã định danh trình duyệt/thiết bị của người dùng
+  DEVICE_NAME      VARCHAR2(200),                                                -- Tên trình duyệt/thiết bị (VD: Chrome Windows, Safari iPhone)
+  PPR_ID           NUMBER        NOT NULL,                                       -- [FK] Tham chiếu cá nhân sử dụng PFM_PROFILES(PPR_ID)
+  HAS_LOGGED_IN    VARCHAR2(1)   DEFAULT 'Y' CHECK (HAS_LOGGED_IN IN ('Y','N')), -- Cờ đánh dấu đã đăng nhập lần đầu ('Y' -> Hiện trong ô <select>)
+  REMEMBER_ME      VARCHAR2(1)   DEFAULT 'Y' CHECK (REMEMBER_ME IN ('Y','N')),   -- Cho phép chuyển đổi nhanh 1 chạm trong <select> ('Y'/'N')
+  FIRST_LOGIN_DATE DATE          DEFAULT SYSDATE,                                -- Thời điểm đăng nhập thành công lần đầu tiên trên thiết bị
+  LAST_ACTIVE_DATE DATE          DEFAULT SYSDATE,                                -- Thời điểm chuyển đổi/sử dụng gần nhất trên thiết bị
+  STATUS           VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),  -- Trạng thái bản ghi chuẩn OAP ('Y': Đang lưu, 'N': Đã gỡ)
+  CREATED_DATE     DATE          DEFAULT SYSDATE,                                -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY       VARCHAR2(50),                                                 -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE      DATE,                                                         -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY      VARCHAR2(50),                                                 -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_USER_DEVICES_FK_PPR FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_USER_DEVICES_UK     UNIQUE (DEVICE_TOKEN, PPR_ID)
+);
+
+COMMENT ON TABLE  PFM_USER_DEVICES                  IS 'Bảng lưu danh sách cá nhân đã đăng nhập lần đầu trên từng thiết bị để hiển thị trong ô chọn <select>';
+COMMENT ON COLUMN PFM_USER_DEVICES.PUD_ID           IS 'Khóa chính tự tăng qua PFM_USER_DEVICES_SEQ';
+COMMENT ON COLUMN PFM_USER_DEVICES.DEVICE_TOKEN     IS 'Mã định danh duy nhất của trình duyệt hoặc thiết bị client';
+COMMENT ON COLUMN PFM_USER_DEVICES.DEVICE_NAME      IS 'Tên hiển thị của thiết bị/trình duyệt (VD: Chrome PC, Mobile Safari)';
+COMMENT ON COLUMN PFM_USER_DEVICES.PPR_ID           IS 'Khóa ngoại tham chiếu hồ sơ cá nhân PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_USER_DEVICES.HAS_LOGGED_IN    IS 'Y: Đã đăng nhập ít nhất 1 lần trên thiết bị này -> Hiển thị trong <select>';
+COMMENT ON COLUMN PFM_USER_DEVICES.REMEMBER_ME      IS 'Y: Cho phép chuyển đổi nhanh không cần nhập lại mật khẩu trên thiết bị tin cậy';
+COMMENT ON COLUMN PFM_USER_DEVICES.FIRST_LOGIN_DATE IS 'Thời điểm tài khoản đăng nhập lần đầu tiên trên thiết bị';
+COMMENT ON COLUMN PFM_USER_DEVICES.LAST_ACTIVE_DATE IS 'Thời điểm hoạt động hoặc chuyển đổi tài khoản gần nhất';
+COMMENT ON COLUMN PFM_USER_DEVICES.STATUS           IS 'Trạng thái chuẩn OAP (Y: Hiệu lực, N: Đã xóa khỏi danh sách <select>)';
+COMMENT ON COLUMN PFM_USER_DEVICES.CREATED_DATE     IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_USER_DEVICES.CREATED_BY       IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_USER_DEVICES.MODIFY_DATE      IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_USER_DEVICES.MODIFIED_BY      IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.3. BẢNG PFM_WALLETS (Danh mục Ví & Nguồn tiền cá nhân)
+-- ============================================================================
+CREATE TABLE PFM_WALLETS (
+  PWA_ID          NUMBER        PRIMARY KEY,                                     -- [PK] Khóa chính tự tăng (PFM_WALLETS_SEQ)
+  PPR_ID          NUMBER        NOT NULL,                                        -- [FK] Hồ sơ cá nhân sở hữu ví PFM_PROFILES(PPR_ID)
+  WALLET_CODE     VARCHAR2(50)  NOT NULL,                                        -- Mã nguồn tiền (VD: W_TCB, W_MOMO, W_CASH)
+  WALLET_NAME     VARCHAR2(200) NOT NULL,                                        -- Tên hiển thị của ví (VD: Techcombank Chính, Ví MoMo, Tiền mặt)
+  WALLET_TYPE     VARCHAR2(30)  NOT NULL CHECK (WALLET_TYPE IN ('BANK', 'E_WALLET', 'CASH', 'CREDIT', 'SAVING')), -- Loại nguồn tiền
+  ACCOUNT_NO_MASK VARCHAR2(50),                                                  -- Số tài khoản rút gọn hiển thị trên thẻ ví (VD: •••• 8899)
+  INITIAL_BALANCE NUMBER(18,2)  DEFAULT 0 NOT NULL,                              -- Số dư khởi tạo ban đầu khi tạo ví (VNĐ)
+  CURRENT_BALANCE NUMBER(18,2)  DEFAULT 0 NOT NULL,                              -- Số dư thực tế hiện tại (Trigger tự động cộng/trừ khi có giao dịch)
+  COLOR_HEX       VARCHAR2(20)  DEFAULT '#0284c7',                               -- Mã màu HEX nhận diện thương hiệu ví
+  IS_DEFAULT      VARCHAR2(1)   DEFAULT 'N' CHECK (IS_DEFAULT IN ('Y', 'N')),    -- 'Y': Ví mặc định được chọn sẵn khi mở Popup Thêm giao dịch
+  SORT_ORDER      NUMBER(5)     DEFAULT 1,                                       -- Thứ tự ưu tiên hiển thị trên giao diện
+  STATUS          VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),   -- Trạng thái chuẩn OAP ('Y': Đang dùng, 'N': Khóa, 'D': Xóa)
+  CREATED_DATE    DATE          DEFAULT SYSDATE,                                 -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY      VARCHAR2(50),                                                  -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE     DATE,                                                          -- [Audit OAP] Ngày giờ sửa gần nhất
+  MODIFIED_BY     VARCHAR2(50),                                                  -- [Audit OAP] Người sửa gần nhất
+  CONSTRAINT PFM_WALLETS_FK_PPR FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE
+);
+
+COMMENT ON TABLE  PFM_WALLETS                 IS 'Bảng quản lý danh sách Ví và Nguồn tiền độc lập của từng cá nhân';
+COMMENT ON COLUMN PFM_WALLETS.PWA_ID          IS 'Khóa chính định danh ví tiền (Tự tăng qua PFM_WALLETS_SEQ)';
+COMMENT ON COLUMN PFM_WALLETS.PPR_ID          IS 'Khóa ngoại chỉ định cá nhân sở hữu ví PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_WALLETS.WALLET_CODE     IS 'Mã viết tắt của nguồn tiền (VD: W_TCB, W_MOMO, W_CASH)';
+COMMENT ON COLUMN PFM_WALLETS.WALLET_NAME     IS 'Tên nguồn tiền hiển thị trên UI (Techcombank Chính, Ví MoMo, Tiền mặt cá nhân)';
+COMMENT ON COLUMN PFM_WALLETS.WALLET_TYPE     IS 'Phân loại ví: BANK (Ngân hàng), E_WALLET (Ví điện tử), CASH (Tiền mặt), CREDIT (Thẻ tín dụng), SAVING (Sổ tiết kiệm)';
+COMMENT ON COLUMN PFM_WALLETS.ACCOUNT_NO_MASK IS 'Chuỗi số tài khoản rút gọn hoặc mô tả phụ hiển thị trên thẻ ví';
+COMMENT ON COLUMN PFM_WALLETS.INITIAL_BALANCE IS 'Số dư ban đầu lúc mới tạo ví (VNĐ)';
+COMMENT ON COLUMN PFM_WALLETS.CURRENT_BALANCE IS 'Số dư khả dụng hiện tại (VNĐ) — Tự động đồng bộ qua Trigger khi phát sinh Thu/Chi/Nạp mục tiêu';
+COMMENT ON COLUMN PFM_WALLETS.COLOR_HEX       IS 'Mã màu HEX hiển thị thẻ ví và badge nguồn tiền';
+COMMENT ON COLUMN PFM_WALLETS.IS_DEFAULT      IS 'Cờ đánh dấu ví mặc định khi thêm giao dịch mới (Y/N)';
+COMMENT ON COLUMN PFM_WALLETS.SORT_ORDER      IS 'Thứ tự sắp xếp hiển thị ví từ trái sang phải';
+COMMENT ON COLUMN PFM_WALLETS.STATUS          IS 'Trạng thái chuẩn OAP (Y: Hoạt động, N: Ngưng sử dụng, D: Đã xóa)';
+COMMENT ON COLUMN PFM_WALLETS.CREATED_DATE    IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_WALLETS.CREATED_BY      IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_WALLETS.MODIFY_DATE     IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_WALLETS.MODIFIED_BY     IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.4. BẢNG PFM_CATEGORIES (Danh mục Khoản thu / Khoản chi)
+-- ============================================================================
+CREATE TABLE PFM_CATEGORIES (
+  PCA_ID        NUMBER        PRIMARY KEY,                                       -- [PK] Khóa chính tự tăng (PFM_CATEGORIES_SEQ)
+  PPR_ID        NUMBER,                                                          -- [FK] NULL = Danh mục chuẩn hệ thống; Có giá trị = Danh mục riêng của cá nhân
+  CATEGORY_CODE VARCHAR2(50)  NOT NULL,                                          -- [UK] Mã danh mục (VD: CAT_FOOD, CAT_MOVE, CAT_SALARY)
+  CATEGORY_NAME VARCHAR2(200) NOT NULL,                                          -- Tên hiển thị danh mục (VD: Ăn uống, Đi lại, Lương chính)
+  TX_TYPE       VARCHAR2(20)  NOT NULL CHECK (TX_TYPE IN ('EXPENSE', 'INCOME')), -- Phân nhóm: EXPENSE (Khoản chi) hoặc INCOME (Khoản thu)
+  ICON_CODE     VARCHAR2(50)  NOT NULL,                                          -- Mã icon SVG hiển thị trên UI (utensils, car, bag, receipt, wallet...)
+  COLOR_HEX     VARCHAR2(20)  NOT NULL,                                          -- Mã màu chữ/viền chính của Pill Badge và biểu đồ Donut (#F59E0B...)
+  BG_COLOR_HEX  VARCHAR2(20)  NOT NULL,                                          -- Mã màu nền nhạt của Pill Badge (#FEF3C7...)
+  DEFAULT_LIMIT NUMBER(18,2)  DEFAULT 0,                                         -- Hạn mức ngân sách gợi ý mặc định hàng tháng (VNĐ)
+  SORT_ORDER    NUMBER(5)     DEFAULT 1,                                         -- Thứ tự hiển thị trên lưới chọn 4 cột trong Popup
+  STATUS        VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),     -- Trạng thái chuẩn OAP ('Y'/'N'/'D')
+  CREATED_DATE  DATE          DEFAULT SYSDATE,                                   -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY    VARCHAR2(50),                                                    -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE   DATE,                                                            -- [Audit OAP] Ngày giờ sửa gần nhất
+  MODIFIED_BY   VARCHAR2(50),                                                    -- [Audit OAP] Người sửa gần nhất
+  CONSTRAINT PFM_CATEGORIES_UK_CODE UNIQUE (CATEGORY_CODE),
+  CONSTRAINT PFM_CATEGORIES_FK_PPR  FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE
+);
+
+COMMENT ON TABLE  PFM_CATEGORIES               IS 'Bảng danh mục phân loại các khoản Chi tiêu (EXPENSE) và Thu nhập (INCOME)';
+COMMENT ON COLUMN PFM_CATEGORIES.PCA_ID        IS 'Khóa chính định danh danh mục thu chi (Tự tăng qua PFM_CATEGORIES_SEQ)';
+COMMENT ON COLUMN PFM_CATEGORIES.PPR_ID        IS 'Khóa ngoại PFM_PROFILES(PPR_ID): Để NULL nếu là danh mục dùng chung toàn hệ thống';
+COMMENT ON COLUMN PFM_CATEGORIES.CATEGORY_CODE IS 'Mã định danh danh mục duy nhất (VD: CAT_FOOD, CAT_HOUSING, CAT_SALARY)';
+COMMENT ON COLUMN PFM_CATEGORIES.CATEGORY_NAME IS 'Tên danh mục hiển thị trên giao diện (VD: Ăn uống, Di chuyển, Lương & Thưởng)';
+COMMENT ON COLUMN PFM_CATEGORIES.TX_TYPE       IS 'Loại danh mục: EXPENSE (Khoản chi ra) hoặc INCOME (Khoản thu vào)';
+COMMENT ON COLUMN PFM_CATEGORIES.ICON_CODE     IS 'Tên mã biểu tượng vector SVG hiển thị trên bảng và popup';
+COMMENT ON COLUMN PFM_CATEGORIES.COLOR_HEX     IS 'Mã màu HEX chính dùng cho chữ, icon và lát cắt biểu đồ Donut';
+COMMENT ON COLUMN PFM_CATEGORIES.BG_COLOR_HEX  IS 'Mã màu HEX nền nhạt dùng cho thẻ Pill Badge danh mục';
+COMMENT ON COLUMN PFM_CATEGORIES.DEFAULT_LIMIT IS 'Định mức ngân sách tháng mặc định gợi ý cho danh mục chi tiêu';
+COMMENT ON COLUMN PFM_CATEGORIES.SORT_ORDER    IS 'Thứ tự sắp xếp ưu tiên trên lưới chọn danh mục';
+COMMENT ON COLUMN PFM_CATEGORIES.STATUS        IS 'Trạng thái chuẩn OAP (Y: Đang hoạt động, N: Ẩn, D: Đã xóa)';
+COMMENT ON COLUMN PFM_CATEGORIES.CREATED_DATE  IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_CATEGORIES.CREATED_BY    IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_CATEGORIES.MODIFY_DATE   IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_CATEGORIES.MODIFIED_BY   IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.5. BẢNG PFM_TRANSACTIONS (Bảng kê Danh sách thu chi cá nhân - Trung tâm)
+-- ============================================================================
+CREATE TABLE PFM_TRANSACTIONS (
+  PTR_ID          NUMBER        PRIMARY KEY,                                                -- [PK] Khóa chính tự tăng (PFM_TRANSACTIONS_SEQ)
+  TX_CODE         VARCHAR2(50)  NOT NULL,                                                   -- Mã bút toán giao dịch hiển thị (VD: GD-202610-001)
+  PPR_ID          NUMBER        NOT NULL,                                                   -- [FK] Cá nhân thực hiện giao dịch PFM_PROFILES(PPR_ID)
+  PWA_ID          NUMBER        NOT NULL,                                                   -- [FK] Ví nguồn tiền thanh toán/nhận tiền PFM_WALLETS(PWA_ID)
+  PCA_ID          NUMBER        NOT NULL,                                                   -- [FK] Danh mục thu chi PFM_CATEGORIES(PCA_ID)
+  TX_TYPE         VARCHAR2(20)  NOT NULL CHECK (TX_TYPE IN ('EXPENSE','INCOME','TRANSFER')),-- Loại bút toán: EXPENSE (Chi), INCOME (Thu), TRANSFER (Chuyển ví)
+  AMOUNT          NUMBER(18,2)  NOT NULL CHECK (AMOUNT > 0),                                -- Số tiền giao dịch (> 0, UI tự tách dấu chấm '.' hàng nghìn)
+  TITLE           VARCHAR2(300) NOT NULL,                                                   -- Nội dung/Khoản mục chính hiển thị trên bảng 1 dòng
+  NOTE            VARCHAR2(1000),                                                           -- Ghi chú diễn giải chi tiết bổ sung
+  TX_DATE         DATE          DEFAULT SYSDATE NOT NULL,                                   -- Ngày phát sinh giao dịch thực tế
+  PERIOD_MONTH    VARCHAR2(7)   NOT NULL,                                                   -- Kỳ tháng hạch toán 'YYYY-MM' (VD: '2026-10') phục vụ gom nhóm nhanh
+  TRANSFER_PWA_ID NUMBER,                                                                   -- [FK] Ví đích nhận tiền khi TX_TYPE = 'TRANSFER'
+  STATUS          VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),              -- Trạng thái chuẩn OAP ('Y': Hợp lệ, 'D': Đã xóa)
+  CREATED_DATE    DATE          DEFAULT SYSDATE,                                            -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY      VARCHAR2(50),                                                             -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE     DATE,                                                                     -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY     VARCHAR2(50),                                                             -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_TRANSACTIONS_FK_PPR  FOREIGN KEY (PPR_ID)          REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_TRANSACTIONS_FK_PWA  FOREIGN KEY (PWA_ID)          REFERENCES PFM_WALLETS(PWA_ID),
+  CONSTRAINT PFM_TRANSACTIONS_FK_PCA  FOREIGN KEY (PCA_ID)          REFERENCES PFM_CATEGORIES(PCA_ID),
+  CONSTRAINT PFM_TRANSACTIONS_FK_TPWA FOREIGN KEY (TRANSFER_PWA_ID) REFERENCES PFM_WALLETS(PWA_ID) ON DELETE SET NULL
+);
+
+CREATE INDEX IDX_PTR_PPR_DATE ON PFM_TRANSACTIONS(PPR_ID, TX_DATE DESC);
+CREATE INDEX IDX_PTR_PCA_TYPE ON PFM_TRANSACTIONS(PPR_ID, TX_TYPE, PCA_ID);
+
+COMMENT ON TABLE  PFM_TRANSACTIONS                 IS 'Bảng giao dịch trung tâm lưu toàn bộ bút toán Thu, Chi và Chuyển khoản của từng cá nhân';
+COMMENT ON COLUMN PFM_TRANSACTIONS.PTR_ID          IS 'Khóa chính định danh bút toán giao dịch (Tự tăng qua PFM_TRANSACTIONS_SEQ)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.TX_CODE         IS 'Mã giao dịch hiển thị trên bảng Danh sách thu chi (VD: T1, GD-001)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.PPR_ID          IS 'Khóa ngoại tham chiếu hồ sơ cá nhân thực hiện PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.PWA_ID          IS 'Khóa ngoại tham chiếu Ví/Nguồn tiền thanh toán PFM_WALLETS(PWA_ID)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.PCA_ID          IS 'Khóa ngoại tham chiếu Danh mục thu chi PFM_CATEGORIES(PCA_ID)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.TX_TYPE         IS 'Phân loại giao dịch: EXPENSE (Chi tiêu), INCOME (Thu nhập), TRANSFER (Chuyển khoản nội bộ)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.AMOUNT          IS 'Số tiền giao dịch (VNĐ, luôn lớn hơn 0; trên UI hiển thị phân cách bằng dấu chấm)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.TITLE           IS 'Nội dung khoản thu/chi hiển thị trên 1 dòng của bảng Danh sách thu chi';
+COMMENT ON COLUMN PFM_TRANSACTIONS.NOTE            IS 'Ghi chú chi tiết thêm cho bút toán giao dịch';
+COMMENT ON COLUMN PFM_TRANSACTIONS.TX_DATE         IS 'Ngày thực tế phát sinh khoản thu/chi';
+COMMENT ON COLUMN PFM_TRANSACTIONS.PERIOD_MONTH    IS 'Chuỗi kỳ kế toán YYYY-MM (VD: 2026-10) dùng để tính nhanh biểu đồ 6 tháng và ngân sách';
+COMMENT ON COLUMN PFM_TRANSACTIONS.TRANSFER_PWA_ID IS 'Khóa ngoại tham chiếu Ví nhận tiền trong trường hợp chuyển khoản giữa 2 ví';
+COMMENT ON COLUMN PFM_TRANSACTIONS.STATUS          IS 'Trạng thái chuẩn OAP (Y: Hiệu lực, N: Tạm ngưng, D: Đã xóa)';
+COMMENT ON COLUMN PFM_TRANSACTIONS.CREATED_DATE    IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_TRANSACTIONS.CREATED_BY      IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_TRANSACTIONS.MODIFY_DATE     IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_TRANSACTIONS.MODIFIED_BY     IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.6. BẢNG PFM_BUDGETS (Hạn mức Ngân sách chi tiêu theo tháng)
+-- ============================================================================
+CREATE TABLE PFM_BUDGETS (
+  PBU_ID          NUMBER       PRIMARY KEY,                                   -- [PK] Khóa chính tự tăng (PFM_BUDGETS_SEQ)
+  PPR_ID          NUMBER       NOT NULL,                                      -- [FK] Hồ sơ cá nhân sở hữu ngân sách PFM_PROFILES(PPR_ID)
+  PCA_ID          NUMBER       NOT NULL,                                      -- [FK] Danh mục chi tiêu áp dụng hạn mức PFM_CATEGORIES(PCA_ID)
+  PERIOD_MONTH    VARCHAR2(7)  NOT NULL,                                      -- [UK] Kỳ ngân sách định dạng 'YYYY-MM' (VD: '2026-10')
+  LIMIT_AMOUNT    NUMBER(18,2) NOT NULL CHECK (LIMIT_AMOUNT > 0),             -- Hạn mức chi tiêu tối đa cho phép trong tháng (VNĐ)
+  SPENT_AMOUNT    NUMBER(18,2) DEFAULT 0 NOT NULL,                            -- Tổng tiền đã chi thực tế trong tháng (Trigger tự động đồng bộ)
+  ALERT_THRESHOLD NUMBER(5,2)  DEFAULT 80,                                    -- Ngưỡng phần trăm (%) bắt đầu cảnh báo vàng cam (Mặc định 80% - 85%)
+  STATUS          VARCHAR2(1)  DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')), -- Trạng thái chuẩn OAP ('Y'/'N'/'D')
+  CREATED_DATE    DATE         DEFAULT SYSDATE,                               -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY      VARCHAR2(50),                                               -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE     DATE,                                                       -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY     VARCHAR2(50),                                               -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_BUDGETS_FK_PPR    FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_BUDGETS_FK_PCA    FOREIGN KEY (PCA_ID) REFERENCES PFM_CATEGORIES(PCA_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_BUDGETS_UK_PERIOD UNIQUE (PPR_ID, PCA_ID, PERIOD_MONTH)
+);
+
+COMMENT ON TABLE  PFM_BUDGETS                 IS 'Bảng thiết lập và theo dõi hạn mức Ngân sách chi tiêu hàng tháng theo từng danh mục của cá nhân';
+COMMENT ON COLUMN PFM_BUDGETS.PBU_ID          IS 'Khóa chính định danh hạn mức ngân sách (Tự tăng qua PFM_BUDGETS_SEQ)';
+COMMENT ON COLUMN PFM_BUDGETS.PPR_ID          IS 'Khóa ngoại tham chiếu hồ sơ cá nhân PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_BUDGETS.PCA_ID          IS 'Khóa ngoại tham chiếu danh mục chi tiêu PFM_CATEGORIES(PCA_ID)';
+COMMENT ON COLUMN PFM_BUDGETS.PERIOD_MONTH    IS 'Kỳ tháng áp dụng ngân sách theo định dạng YYYY-MM (VD: 2026-10)';
+COMMENT ON COLUMN PFM_BUDGETS.LIMIT_AMOUNT    IS 'Số tiền hạn mức trần tối đa được phép chi trong tháng (VNĐ)';
+COMMENT ON COLUMN PFM_BUDGETS.SPENT_AMOUNT    IS 'Số tiền thực tế đã chi tiêu trong tháng của danh mục này (Đồng bộ tự động từ PFM_TRANSACTIONS)';
+COMMENT ON COLUMN PFM_BUDGETS.ALERT_THRESHOLD IS 'Tỷ lệ phần trăm (%) kích hoạt cảnh báo sắp chạm trần ngân sách (VD: 80 hoặc 85)';
+COMMENT ON COLUMN PFM_BUDGETS.STATUS          IS 'Trạng thái chuẩn OAP (Y: Đang áp dụng, N: Đóng kỳ, D: Đã xóa)';
+COMMENT ON COLUMN PFM_BUDGETS.CREATED_DATE    IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_BUDGETS.CREATED_BY      IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_BUDGETS.MODIFY_DATE     IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_BUDGETS.MODIFIED_BY     IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.7. BẢNG PFM_SAVINGS_GOALS (★ Header: Mục tiêu Tiết kiệm Cá nhân)
+-- ============================================================================
+CREATE TABLE PFM_SAVINGS_GOALS (
+  PSG_ID         NUMBER        PRIMARY KEY,                                     -- [PK] Khóa chính tự tăng (PFM_SAVINGS_GOALS_SEQ)
+  PPR_ID         NUMBER        NOT NULL,                                        -- [FK] Hồ sơ cá nhân sở hữu mục tiêu PFM_PROFILES(PPR_ID)
+  GOAL_CODE      VARCHAR2(50)  NOT NULL,                                        -- Mã mục tiêu tiết kiệm (VD: GOAL_01, GOAL_02)
+  TITLE          VARCHAR2(200) NOT NULL,                                        -- Tên mục tiêu cá nhân (VD: Quỹ dự phòng khẩn cấp, Mua MacBook Pro)
+  TARGET_AMOUNT  NUMBER(18,2)  NOT NULL CHECK (TARGET_AMOUNT > 0),              -- Số tiền mục tiêu cần tích lũy đạt được (VNĐ)
+  CURRENT_AMOUNT NUMBER(18,2)  DEFAULT 0 NOT NULL CHECK (CURRENT_AMOUNT >= 0),  -- Tổng số tiền hiện đã tích lũy được (Trigger tự cộng khi + Nạp tiền)
+  DEADLINE_TEXT  VARCHAR2(50),                                                  -- Thời hạn hoàn thành hiển thị (VD: '12/2026', '06/2027')
+  DEADLINE_DATE  DATE,                                                          -- Ngày hạn chót hoàn thành mục tiêu dự kiến
+  THEME_ID       VARCHAR2(30)  DEFAULT 'emerald',                               -- Mã chủ đề màu chọn trên Popup (emerald, sky, violet, orange, pink)
+  ICON_CODE      VARCHAR2(50)  DEFAULT 'shieldCheck' NOT NULL,                  -- Mã biểu tượng SVG (shieldCheck, plane, laptop, bag, heart)
+  COLOR_HEX      VARCHAR2(20)  NOT NULL,                                        -- Mã màu HEX của thanh tiến trình và icon chính
+  BG_COLOR_HEX   VARCHAR2(20)  NOT NULL,                                        -- Mã màu HEX nền khung icon trên thẻ mục tiêu
+  GOAL_STATUS    VARCHAR2(20)  DEFAULT 'ACTIVE' CHECK (GOAL_STATUS IN ('ACTIVE', 'COMPLETED', 'CANCELLED')), -- Trạng thái hoàn thành mục tiêu
+  STATUS         VARCHAR2(1)   DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')),   -- Trạng thái bản ghi chuẩn OAP ('Y'/'N'/'D')
+  CREATED_DATE   DATE          DEFAULT SYSDATE,                                 -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY     VARCHAR2(50),                                                  -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE    DATE,                                                          -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY    VARCHAR2(50),                                                  -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_SAVINGS_GOALS_FK_PPR FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE
+);
+
+COMMENT ON TABLE  PFM_SAVINGS_GOALS                IS 'Bảng Header quản lý các Mục tiêu tài chính và tiết kiệm dài hạn của từng cá nhân';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.PSG_ID         IS 'Khóa chính định danh mục tiêu tiết kiệm (Tự tăng qua PFM_SAVINGS_GOALS_SEQ)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.PPR_ID         IS 'Khóa ngoại tham chiếu hồ sơ cá nhân sở hữu mục tiêu PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.GOAL_CODE      IS 'Mã định danh mục tiêu (VD: GOAL_01, GOAL_02)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.TITLE          IS 'Tên gọi mục tiêu tiết kiệm hiển thị trên giao diện';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.TARGET_AMOUNT  IS 'Tổng số tiền đích cần tích lũy đủ (VNĐ)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.CURRENT_AMOUNT IS 'Tổng số tiền đã nạp tích lũy tính đến hiện tại (Đồng bộ tự động từ PFM_GOAL_DEPOSITS)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.DEADLINE_TEXT  IS 'Chuỗi tháng/năm mục tiêu hoàn thành hiển thị trên thẻ (VD: 12/2026)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.DEADLINE_DATE  IS 'Ngày hạn chót dự kiến đạt mục tiêu';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.THEME_ID       IS 'Tên gói màu sắc giao diện của thẻ mục tiêu';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.ICON_CODE      IS 'Mã biểu tượng SVG đại diện cho mục tiêu';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.COLOR_HEX      IS 'Mã màu HEX chính của thanh Progress Bar';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.BG_COLOR_HEX   IS 'Mã màu HEX nền nhạt của biểu tượng mục tiêu';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.GOAL_STATUS    IS 'Trạng thái nghiệp vụ: ACTIVE (Đang tích lũy), COMPLETED (Đã đạt 100%), CANCELLED (Hủy)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.STATUS         IS 'Trạng thái chuẩn OAP (Y: Hiệu lực, N: Ẩn, D: Đã xóa)';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.CREATED_DATE   IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.CREATED_BY     IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.MODIFY_DATE    IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_SAVINGS_GOALS.MODIFIED_BY    IS 'Người cập nhật bản ghi';
+
+-- ============================================================================
+-- 2.8. BẢNG PFM_GOAL_DEPOSITS (★ Detail: Lịch sử Nạp tiền vào Mục tiêu)
+-- ============================================================================
+CREATE TABLE PFM_GOAL_DEPOSITS (
+  PGD_ID         NUMBER       PRIMARY KEY,                                   -- [PK] Khóa chính tự tăng (PFM_GOAL_DEPOSITS_SEQ)
+  PSG_ID         NUMBER       NOT NULL,                                      -- [FK] Mục tiêu nhận tiền tích lũy PFM_SAVINGS_GOALS(PSG_ID)
+  PPR_ID         NUMBER       NOT NULL,                                      -- [FK] Cá nhân thực hiện nạp tiền PFM_PROFILES(PPR_ID)
+  PWA_ID         NUMBER,                                                     -- [FK] Ví nguồn tiền trích ra để nạp PFM_WALLETS(PWA_ID)
+  DEPOSIT_AMOUNT NUMBER(18,2) NOT NULL CHECK (DEPOSIT_AMOUNT > 0),           -- Số tiền nạp thêm vào mục tiêu trong lần nạp này (VNĐ)
+  DEPOSIT_DATE   DATE         DEFAULT SYSDATE NOT NULL,                      -- Ngày giờ thực hiện bấm '+ Nạp tiền'
+  NOTE           VARCHAR2(500),                                              -- Ghi chú lần nạp tích lũy (VD: Trích thưởng dự án tháng 10)
+  STATUS         VARCHAR2(1)  DEFAULT 'Y' CHECK (STATUS IN ('Y', 'N', 'D')), -- Trạng thái chuẩn OAP ('Y'/'N'/'D')
+  CREATED_DATE   DATE         DEFAULT SYSDATE,                               -- [Audit OAP] Ngày giờ tạo bản ghi
+  CREATED_BY     VARCHAR2(50),                                               -- [Audit OAP] Người tạo bản ghi
+  MODIFY_DATE    DATE,                                                       -- [Audit OAP] Ngày giờ cập nhật gần nhất
+  MODIFIED_BY    VARCHAR2(50),                                               -- [Audit OAP] Người cập nhật gần nhất
+  CONSTRAINT PFM_GOAL_DEPOSITS_FK_PSG FOREIGN KEY (PSG_ID) REFERENCES PFM_SAVINGS_GOALS(PSG_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_GOAL_DEPOSITS_FK_PPR FOREIGN KEY (PPR_ID) REFERENCES PFM_PROFILES(PPR_ID) ON DELETE CASCADE,
+  CONSTRAINT PFM_GOAL_DEPOSITS_FK_PWA FOREIGN KEY (PWA_ID) REFERENCES PFM_WALLETS(PWA_ID) ON DELETE SET NULL
+);
+
+COMMENT ON TABLE  PFM_GOAL_DEPOSITS                IS 'Bảng Detail lưu lịch sử từng lần cá nhân bấm + Nạp tiền tích lũy vào mục tiêu tiết kiệm';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.PGD_ID         IS 'Khóa chính định danh lần nạp tiền mục tiêu (Tự tăng qua PFM_GOAL_DEPOSITS_SEQ)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.PSG_ID         IS 'Khóa ngoại tham chiếu bảng Header mục tiêu PFM_SAVINGS_GOALS(PSG_ID)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.PPR_ID         IS 'Khóa ngoại tham chiếu hồ sơ cá nhân thực hiện nạp PFM_PROFILES(PPR_ID)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.PWA_ID         IS 'Khóa ngoại tham chiếu Ví nguồn tiền bị trích tiền khi nạp PFM_WALLETS(PWA_ID)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.DEPOSIT_AMOUNT IS 'Số tiền nạp tích lũy trong giao dịch nạp này (VNĐ, luôn > 0)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.DEPOSIT_DATE   IS 'Thời điểm thực hiện nạp tiền tích lũy';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.NOTE           IS 'Nội dung ghi chú cho lần nạp tiền vào mục tiêu';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.STATUS         IS 'Trạng thái chuẩn OAP (Y: Hợp lệ, N: Hủy, D: Đã xóa)';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.CREATED_DATE   IS 'Ngày giờ tạo bản ghi';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.CREATED_BY     IS 'Người tạo bản ghi';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.MODIFY_DATE    IS 'Ngày giờ cập nhật bản ghi';
+COMMENT ON COLUMN PFM_GOAL_DEPOSITS.MODIFIED_BY    IS 'Người cập nhật bản ghi';</pre>
+    </section>
+
+  </main>
+
+  <script>
+    function copyDdlSql(btn) {
+      const code = document.getElementById('ddl-sql-block').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = '✅ Đã sao chép SQL DDL + Comment!';
+        setTimeout(() => { btn.innerText = orig; }, 2200);
+      });
+    }
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      fontFamily: 'Inter, sans-serif'
+    });
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      setTimeout(drawErdConnectors, 60);
+    }
+
+    // =========================================================================
+    // DRAW DYNAMIC SVG RELATIONSHIP LINES FOR INTERACTIVE ERD CANVAS
+    // =========================================================================
+    const ERD_RELATIONS = [
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_USER_DEVICES', toRow: 'row-PFM_USER_DEVICES-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_WALLETS', toRow: 'row-PFM_WALLETS-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_TRANSACTIONS', toRow: 'row-PFM_TRANSACTIONS-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_CATEGORIES', toRow: 'row-PFM_CATEGORIES-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_BUDGETS', toRow: 'row-PFM_BUDGETS-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_SAVINGS_GOALS', toRow: 'row-PFM_SAVINGS_GOALS-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_PROFILES', fromRow: 'row-PFM_PROFILES-PPR_ID', toTable: 'PFM_GOAL_DEPOSITS', toRow: 'row-PFM_GOAL_DEPOSITS-PPR_ID', color: '#ea580c' },
+      { fromTable: 'PFM_WALLETS', fromRow: 'row-PFM_WALLETS-PWA_ID', toTable: 'PFM_TRANSACTIONS', toRow: 'row-PFM_TRANSACTIONS-PWA_ID', color: '#0284c7' },
+      { fromTable: 'PFM_WALLETS', fromRow: 'row-PFM_WALLETS-PWA_ID', toTable: 'PFM_TRANSACTIONS', toRow: 'row-PFM_TRANSACTIONS-TRANSFER_PWA_ID', color: '#0284c7' },
+      { fromTable: 'PFM_WALLETS', fromRow: 'row-PFM_WALLETS-PWA_ID', toTable: 'PFM_GOAL_DEPOSITS', toRow: 'row-PFM_GOAL_DEPOSITS-PWA_ID', color: '#0284c7' },
+      { fromTable: 'PFM_CATEGORIES', fromRow: 'row-PFM_CATEGORIES-PCA_ID', toTable: 'PFM_TRANSACTIONS', toRow: 'row-PFM_TRANSACTIONS-PCA_ID', color: '#7c3aed' },
+      { fromTable: 'PFM_CATEGORIES', fromRow: 'row-PFM_CATEGORIES-PCA_ID', toTable: 'PFM_BUDGETS', toRow: 'row-PFM_BUDGETS-PCA_ID', color: '#7c3aed' },
+      { fromTable: 'PFM_SAVINGS_GOALS', fromRow: 'row-PFM_SAVINGS_GOALS-PSG_ID', toTable: 'PFM_GOAL_DEPOSITS', toRow: 'row-PFM_GOAL_DEPOSITS-PSG_ID', color: '#059669' }
+    ];
+
+    function drawErdConnectors(highlightTable = null) {
+      const svg = document.getElementById('erd-svg-lines');
+      const canvas = document.getElementById('erd-canvas');
+      if (!svg || !canvas) return;
+
+      const cRect = canvas.getBoundingClientRect();
+      svg.setAttribute('width', canvas.scrollWidth);
+      svg.setAttribute('height', canvas.scrollHeight);
+      svg.innerHTML = '';
+
+      ERD_RELATIONS.forEach(rel => {
+        const fromEl = document.getElementById(rel.fromRow);
+        const toEl = document.getElementById(rel.toRow);
+        if (!fromEl || !toEl) return;
+
+        const r1 = fromEl.getBoundingClientRect();
+        const r2 = toEl.getBoundingClientRect();
+
+        const isActive = !highlightTable || rel.fromTable === highlightTable || rel.toTable === highlightTable;
+        const opacity = highlightTable ? (isActive ? '0.95' : '0.12') : '0.48';
+        const strokeW = highlightTable && isActive ? '2.2' : '1.4';
+
+        let x1, y1, x2, y2, cx1, cx2;
+        y1 = (r1.top - cRect.top) + canvas.scrollTop + r1.height / 2;
+        y2 = (r2.top - cRect.top) + canvas.scrollTop + r2.height / 2;
+
+        if (Math.abs(r1.left - r2.left) < 30) {
+          // Same column connection
+          x1 = (r1.left - cRect.left) + canvas.scrollLeft;
+          x2 = (r2.left - cRect.left) + canvas.scrollLeft;
+          cx1 = x1 - 26;
+          cx2 = x2 - 26;
+        } else if (r1.right < r2.left) {
+          // Left to Right column
+          x1 = (r1.right - cRect.left) + canvas.scrollLeft;
+          x2 = (r2.left - cRect.left) + canvas.scrollLeft;
+          const mid = (x1 + x2) / 2;
+          cx1 = mid;
+          cx2 = mid;
+        } else {
+          // Right to Left
+          x1 = (r1.left - cRect.left) + canvas.scrollLeft;
+          x2 = (r2.right - cRect.left) + canvas.scrollLeft;
+          const mid = (x1 + x2) / 2;
+          cx1 = mid;
+          cx2 = mid;
+        }
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M ${x1} ${y1} C ${cx1} ${y1}, ${cx2} ${y2}, ${x2} ${y2}`);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', rel.color);
+        path.setAttribute('stroke-width', strokeW);
+        path.setAttribute('stroke-opacity', opacity);
+        if (highlightTable && isActive) {
+          path.setAttribute('stroke-dasharray', 'none');
+        }
+        svg.appendChild(path);
+
+        // Draw PK Circle (1) and FK Crowfoot dot (N)
+        const c1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c1.setAttribute('cx', x1);
+        c1.setAttribute('cy', y1);
+        c1.setAttribute('r', '3');
+        c1.setAttribute('fill', rel.color);
+        c1.setAttribute('fill-opacity', opacity);
+        svg.appendChild(c1);
+
+        const c2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c2.setAttribute('cx', x2);
+        c2.setAttribute('cy', y2);
+        c2.setAttribute('r', '3.5');
+        c2.setAttribute('fill', rel.color);
+        c2.setAttribute('fill-opacity', opacity);
+        svg.appendChild(c2);
+      });
+    }
+
+    // Hover interactions on ERD entities
+    document.querySelectorAll('.erd-entity').forEach(entity => {
+      entity.addEventListener('mouseenter', () => {
+        const tbl = entity.getAttribute('data-table');
+        const connected = new Set([tbl]);
+        ERD_RELATIONS.forEach(r => {
+          if (r.fromTable === tbl) connected.add(r.toTable);
+          if (r.toTable === tbl) connected.add(r.fromTable);
+        });
+        document.querySelectorAll('.erd-entity').forEach(el => {
+          const t = el.getAttribute('data-table');
+          el.classList.toggle('active-entity', t === tbl);
+          el.classList.toggle('dimmed', !connected.has(t));
+        });
+        drawErdConnectors(tbl);
+      });
+
+      entity.addEventListener('mouseleave', () => {
+        document.querySelectorAll('.erd-entity').forEach(el => {
+          el.classList.remove('active-entity', 'dimmed');
+        });
+        drawErdConnectors(null);
+      });
+    });
+
+    window.addEventListener('load', () => setTimeout(() => drawErdConnectors(null), 150));
+    window.addEventListener('resize', () => drawErdConnectors(null));
+
+    // =========================================================================
+    // FILTER & SEARCH DATA DICTIONARY
+    // =========================================================================
+    function filterByTable(tableName, btnEl) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      document.querySelectorAll('[data-table-card]').forEach(card => {
+        const name = card.getAttribute('data-table-card');
+        card.style.display = (tableName === 'ALL' || name === tableName) ? 'block' : 'none';
+      });
+    }
+
+    function filterDictionary() {
+      const q = (document.getElementById('dictSearch').value || '').trim().toLowerCase();
+      document.querySelectorAll('[data-table-card]').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

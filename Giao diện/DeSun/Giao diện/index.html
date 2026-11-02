@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeSun FinFlow — Quản Lý Tài Chính Cá Nhân & Nhóm</title>
+  <link rel="icon" type="image/svg+xml" href="desun-logo.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SheetJS (XLSX) Engine for Real Excel Read/Write -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="styles.css?v=20261101_1" />
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-indigo-600 selection:text-white">
+  <!-- Main Application Container -->
+  <div id="app-root"></div>
+
+  <!-- Hidden Fallback File Input for Excel Import -->
+  <input type="file" id="excel-file-input" accept=".xlsx,.xls" class="hidden" onchange="handleExcelUploadInput(event)" />
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5 max-w-sm"></div>
+
+  <!-- Application Logic -->
+  <script src="app.js?v=20261101_1"></script>
+</body>
+</html>
