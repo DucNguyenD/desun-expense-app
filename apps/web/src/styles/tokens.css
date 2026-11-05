@@ -1,0 +1,44 @@
+:root {
+  font-family:var(--font-body);
+  color:#233f34;
+  background:#f5f3eb;
+  font-synthesis:none;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  --paper:#f5f3eb;
+  --ink:#233f34;
+  --primary:#315444;
+  --primary-light:#e6ecdf;
+  --accent:#d99a69;
+  --soft-accent:#f0d8ba;
+  --line:#233f3424;
+  --muted:#7a8176;
+  --card:#fffef8;
+  --font-body:"Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+  --display:"Lora", Georgia, serif;
+  --scroll:0;
+}
+
+:root[data-theme=indigo] {
+  --paper:#f3f2f6;
+  --ink:#30334e;
+  --primary:#52568e;
+  --primary-light:#e5e5f0;
+  --accent:#e1a27d;
+  --soft-accent:#f4decb;
+  --line:#30334e24;
+  --muted:#7e7c8c;
+  --card:#fffdfb;
+}
+
+:root[data-theme=clay] {
+  --paper:#f6f0e8;
+  --ink:#50362d;
+  --primary:#a4513e;
+  --primary-light:#efdfd4;
+  --accent:#d3ad69;
+  --soft-accent:#f1e2be;
+  --line:#50362d24;
+  --muted:#8b7d70;
+  --card:#fffaf4;
+}

@@ -1,0 +1,10 @@
+.reading-progress {
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  width:100%;
+  background:var(--accent);
+  transform-origin:left;
+  z-index:60;
+}

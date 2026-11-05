@@ -1,4 +1,4 @@
-<h1 align="center">DeSun</h1>
+<h1 align="center">desun-expense-app</h1>
 
 <p align="center">
   <a href="https://github.com/DucNguyenD/desun-expense-app">

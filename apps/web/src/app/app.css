@@ -1,0 +1,6 @@
+.app {
+  overflow:clip;
+  background:var(--paper);
+  transition:background .5s,color .5s;
+  color:var(--ink);
+}
